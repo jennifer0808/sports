@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <properties resource="application.properties"/>
+    <!-- defaultModelType="flat" 设置复合主键时不单独为主键创建实体 -->
+    <context id="MySql" defaultModelType="flat">
+        <!-- 生成的POJO实现java.io.Serializable接口 -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <jdbcConnection
+                driverClass="com.mysql.jdbc.Driver"
+                connectionURL="jdbc:mysql://localhost:3306/sports"
+                userId="root"
+                password="root"/>
+
+       <!-- <jdbcConnection
+                driverClass="${spring.datasource.druid.driver-class-name}"
+                connectionURL="${spring.datasource.druid.url}"
+                userId="${spring.datasource.druid.username}"
+                password="${spring.datasource.druid.password}"/>-->
+        <!-- 生成POJO对象，并将类放到com.jennifer.sportsmeeting.bean包下 -->
+        <javaModelGenerator targetPackage="com.jennifer.sportsmeeting.bean" targetProject="src/main/java"></javaModelGenerator>
+        <!-- 生成mapper xml文件，并放到resources下的mapper文件夹下 -->
+        <sqlMapGenerator targetPackage="mappers"  targetProject="src/main/resources"></sqlMapGenerator>
+        <!-- 生成mapper xml对应dao接口，放到com.jennifer.sportsmeeting.mapper包下-->
+        <javaClientGenerator targetPackage="com.jennifer.sportsmeeting.mapper" targetProject="src/main/java" type="XMLMAPPER"></javaClientGenerator>
+
+        <!-- table标签可以有多个，至少一个，tableName指定表名，可以使用_和%通配符 -->
+        <table tableName="manager">
+            <!-- 是否只生成POJO对象 -->
+            <property name="modelOnly" value="false"/>
+        </table>
+    </context>
+</generatorConfiguration>
