@@ -4,8 +4,11 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <properties resource="application.properties"/>
+    <classPathEntry  location="D:\application\maven\maven_content\repository\mysql\mysql-connector-java\5.1.34\mysql-connector-java-5.1.34.jar"/>
+
     <!-- defaultModelType="flat" 设置复合主键时不单独为主键创建实体 -->
     <context id="MySql" defaultModelType="flat">
+
         <!-- 生成的POJO实现java.io.Serializable接口 -->
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
 
