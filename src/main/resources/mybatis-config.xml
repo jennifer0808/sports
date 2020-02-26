@@ -5,8 +5,8 @@
 <configuration>
 
     <settings>
-        <!-- 设置日志输出为LOG4J -->
-        <setting name="logImpl" value="LOG4J" />
+        <!-- 设置日志输出为LOG4J2 -->
+        <setting name="logImpl" value="LOG4J2" />
         <!--将以下画线方式命名的数据库列映射到 Java 对象的驼峰式命名属性中-->
         <setting name= "mapUnderscoreToCamelCase" value="true" />
 
@@ -34,7 +34,7 @@
     </settings>
     <!--typeAliases这个属性 给实体类起一个别名  -->
     <typeAliases>
-         <typeAlias type="com.jennifer.sportsmeeting.bean.Manager" alias="manager"/>
+         <typeAlias alias="manager" type="com.jennifer.sportsmeeting.bean.Manager" />
     </typeAliases>
 
 </configuration>
