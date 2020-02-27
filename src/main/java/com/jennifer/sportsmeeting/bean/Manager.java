@@ -76,4 +76,13 @@ public class Manager implements Serializable {
     public void setmPassword(String mPassword) {
         this.mPassword = mPassword;
     }
+
+    public Manager(){
+        super();
+    }
+    public Manager(String mUsername, String mPassword) {
+        super();
+        this.mUsername = mUsername;
+        this.mPassword = mPassword;
+    }
 }
