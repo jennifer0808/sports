@@ -5,7 +5,7 @@ import com.jennifer.sportsmeeting.exception.Message;
 import java.util.Date;
 
 /**
- * 用于处理返回的数据以及信息类
+ * 用于处理返回的数据以及信息
  */
 public class MessageUtil {
 

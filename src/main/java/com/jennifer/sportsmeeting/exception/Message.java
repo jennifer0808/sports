@@ -2,6 +2,10 @@ package com.jennifer.sportsmeeting.exception;
 
 import java.io.Serializable;
 
+/**
+ * 返回的消息类
+ * @param <T>
+ */
 public class Message<T> implements Serializable {
     /**
      * 状态码
