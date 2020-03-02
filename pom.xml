@@ -16,6 +16,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <thymeleaf-spring5.version>3.0.9.RELEASE</thymeleaf-spring5.version>
+        <thymeleaf-layout-dialect.version>2.2.2</thymeleaf-layout-dialect.version>
     </properties>
 
     <dependencies>
@@ -72,11 +74,26 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
+
+        <!--thymeleaf-HTML5-->
+        <dependency>
+            <groupId>net.sourceforge.nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+            <version>1.9.22</version>
+        </dependency>
+
         <!--引入bootstrap-WebJars依赖-->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
             <version>4.4.1</version>
+        </dependency>
+
+        <!--引入jquery-WebJars依赖-->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>3.4.1</version>
         </dependency>
 
 
@@ -116,6 +133,25 @@
                 </configuration>
             </plugin>
         </plugins>
+
+      <!--  <resources>
+            <resource>
+                <directory>src/main/java</directory>&lt;!&ndash;java文件的路径&ndash;&gt;
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+                &lt;!&ndash; <filtering>false</filtering>&ndash;&gt;
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>&lt;!&ndash;资源文件的路径&ndash;&gt;
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+                &lt;!&ndash; <filtering>false</filtering>&ndash;&gt;
+            </resource>
+        </resources>-->
+
+
     </build>
 
 </project>
