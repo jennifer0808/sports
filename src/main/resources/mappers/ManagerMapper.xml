@@ -87,7 +87,7 @@
     m_username, m_password
   </sql>
 
-  <select id="selectUserByManager" parameterType="com.jennifer.sportsmeeting.bean.Manager" resultMap="selectUserByManager">
+  <select id="selectUserByManager" parameterType="com.jennifer.sportsmeeting.bean.Manager" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
       from manager

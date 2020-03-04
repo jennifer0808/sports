@@ -134,24 +134,6 @@
             </plugin>
         </plugins>
 
-      <!--  <resources>
-            <resource>
-                <directory>src/main/java</directory>&lt;!&ndash;java文件的路径&ndash;&gt;
-                <includes>
-                    <include>**/*.*</include>
-                </includes>
-                &lt;!&ndash; <filtering>false</filtering>&ndash;&gt;
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>&lt;!&ndash;资源文件的路径&ndash;&gt;
-                <includes>
-                    <include>**/*.*</include>
-                </includes>
-                &lt;!&ndash; <filtering>false</filtering>&ndash;&gt;
-            </resource>
-        </resources>-->
-
-
     </build>
 
 </project>

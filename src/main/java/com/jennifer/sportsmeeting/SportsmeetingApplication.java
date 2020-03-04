@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import java.util.List;
 
 @SpringBootApplication
-@EnableTransactionManagement//开启事务
+@EnableTransactionManagement//开启事务,可以不需要
 public class SportsmeetingApplication {
 
     public static void main(String[] args) {

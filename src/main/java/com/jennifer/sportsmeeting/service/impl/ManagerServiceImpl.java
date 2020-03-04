@@ -21,9 +21,9 @@ public class ManagerServiceImpl implements ManagerService {
     public Manager login(Manager manager) {
         Manager m=null;
         m=managerMapper.selectUserByManager(manager);
-        if(m==null){
-            throw new ManagerException(110,"该管理员用户不存在！");
-        }
+//        if(m==null){
+//            throw new ManagerException(110,"该管理员用户不存在！");
+//        }
         return m;
     }
 
