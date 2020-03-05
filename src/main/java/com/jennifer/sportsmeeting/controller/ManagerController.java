@@ -2,12 +2,12 @@ package com.jennifer.sportsmeeting.controller;
 
 import com.jennifer.sportsmeeting.bean.Manager;
 import com.jennifer.sportsmeeting.service.ManagerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,37 +16,33 @@ import java.util.Map;
 /**
  * 控制层
  */
+
 @Controller
 public class ManagerController {
+    private  final static Logger logger = LoggerFactory.getLogger(ManagerController.class);
 
     @Autowired
     private ManagerService managerService;
 
-//    @RequestMapping(value = "/login")
-//    public String gologin(){
-//        return "login";
-//    }
-
-    @GetMapping("/login")
-    public String gologin(Model model){
-        model.addAttribute("manager",new Manager());
+    @GetMapping("login")//可任意设置路径
+    public String gologin(){
         return "login";
     }
 
     @PostMapping(value = "/login")
-    public String login(@ModelAttribute Manager manager, HttpSession session,Map<String,Object> map){
+    public String login(@RequestParam("mUsername") String mUsername,@RequestParam("mPassword") String mPassword, HttpSession session,Map<String,Object> map){
         //验证用户名密码，正确，跳转到indexnum.html,错误，清空session，提示用户名密码错误
-        System.out.println("manager:"+manager+";username:"+manager.getmUsername()+";password:"+manager.getmPassword());
-        if(manager.getmUsername()!=null&&manager.getmPassword()!=null &&!"".equals(manager.getmUsername()) &&!"".equals(manager.getmPassword()) ) {
+        logger.info("username:"+mUsername+";password:"+mPassword);
+        if(mUsername!=null&&mPassword!=null &&!"".equals(mUsername) &&!"".equals(mPassword) ) {
 
-            Manager man = managerService.login(manager);
+            Manager man = managerService.login(new Manager(mUsername,mPassword));
             if(man!=null&& !"".equals(man)){
-                if ( man.getmUsername().equals(manager.getmUsername()) && man.getmPassword().equals(manager.getmPassword())) {
-                    session.setAttribute("username", manager.getmUsername());
-                    System.out.println("username:"+man.getmUsername());
+                if ( man.getmUsername().equals(mUsername) && man.getmPassword().equals(mPassword)) {
+                    session.setAttribute("username", mUsername);
+                    logger.info("username:"+man.getmUsername());
                     map.put("age", 23);
                 }
-                return "redirect:/main";
+                return "redirect:/manager.html";//防止浏览器中表单重复提交
             }else {
                 session.invalidate();
                 map.put("msg", "用户名密码错误");
@@ -59,16 +55,12 @@ public class ManagerController {
         }
 
     }
-    @RequestMapping("/main")
-    public String goMain(Map<String,Object> map){
-        map.put("age",30);
-        return "main";
-    }
-
-
-
-
-
+//与return "redirect:/main"搭配使用
+//    @RequestMapping("/main")
+//    public String goMain(Map<String,Object> map){
+//        map.put("age",30);
+//        return "main";
+//    }
 
 
 
@@ -97,12 +89,6 @@ public class ManagerController {
 
     }
 
-//    @ResponseBody
-    @RequestMapping("/manager")
-    public String manager(Map<String,Object> map){
-        map.put("username","jennifer");
-        return "success";//thymeleaf模板引擎后，直接跳转到classpasth:/templates/success.html页面
-    }
 
 
 
