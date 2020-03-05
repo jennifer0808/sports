@@ -13,7 +13,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginHandlerInterceptor())
                 .addPathPatterns("/**")//拦截任意多层路径下的任意请求
-                .excludePathPatterns("/","/index.html","/login")//排除登录页面，登录请求
+                .excludePathPatterns("/","/index.html","/login","/home")//排除登录页面，登录请求
                 .excludePathPatterns("/css/**","/images/**","/js/**");//不需要考虑静态资源，springboot已经做好静态映射
     }
 
