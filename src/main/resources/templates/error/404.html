@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
  <head> 
   <title>Smart Error Page Responsive Widget Template| 404Pagefree.com</title> 
   <!-- Meta tag Keywords --> 
@@ -9,7 +9,7 @@
 function hideURLbar(){ window.scrollTo(0,1); } </script> 
   <!-- Meta tag Keywords --> 
   <!-- css files --> 
-  <link href="../css/style1.css" rel="stylesheet" type="text/css" media="all" />
+  <link href="/css/style1.css" rel="stylesheet" type="text/css" media="all" />
   <!-- //css files --> 
   <!-- online-fonts --> 
   <link href="http://fonts.googleapis.com/css?family=Ropa+Sans:400,400i&amp;subset=latin-ext"  rel="stylesheet" />
@@ -24,9 +24,19 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
     <h3>SORRY</h3> 
     <h2>4<img src="/img/confused.gif" alt="image" />4</h2>
     <p>在浏览网页时，服务器无法正常提供信息</p>
-         <b>错误发生时间：</b><p>[[${timestamp}]]</p>
-       <b>错误状态码：</b><p style="coloe:red">[[${status}]]</p>
-    <p>An error Occurred in the Application And Your Page could not be Served.</p> 
+
+    <p>关于内部服务器错误</p>
+    <p> exception：[[${exception}]] </p>
+    <p>message：[[${message}]]</p>
+    <p>status：[[${status}]]</p>
+
+    <p>msg： [[${msg}]]</p>
+    <p>mef.code：[[${mef.code}]]</p>
+    <p>mef.msg：[[${mef.msg}]]</p>
+
+    <p>timestamp：[[${timestamp}]]</p>
+
+    <p>An error Occurred in the Application And Your Page could not be Served.</p>
     <a href="#">go back</a> 
    </div>
   </div> 

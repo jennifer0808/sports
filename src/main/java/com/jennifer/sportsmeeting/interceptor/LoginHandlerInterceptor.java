@@ -37,13 +37,13 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         Object user = request.getSession().getAttribute("username");
-        logger.info("postHandle==user:"+user+"=="+request.getRequestURL());
+//        logger.info("postHandle==user:"+user+"=="+request.getRequestURL());
 
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         Object user = request.getSession().getAttribute("username");
-        logger.info("afterCompletion==user:"+user+"=="+request.getRequestURL());
+//        logger.info("afterCompletion==user:"+user+"=="+request.getRequestURL());
     }
 }
