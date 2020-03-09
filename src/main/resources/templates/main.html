@@ -1,20 +1,21 @@
 <!doctype html>
-<html lang="en" th="http://www.thymeleaf.org" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" >
+    <meta charset="UTF-8">
     <title>后台登录-L-admin2.0</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
 
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="css/font.css">
-    <link rel="stylesheet" href="css/xadmin.css">
+    <link rel="shortcut icon" href="favicon.ico" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link rel="stylesheet" href="css/font.css" th:href="@{css/font.css}">
+    <link rel="stylesheet" href="css/xadmin.css" th:href="@{css/xadmin.css}">
 
-    <script src="js/jquery.min.js"></script>
-    <script src="lib/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/xadmin.js"></script>
+    <script src="js/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+    <script src="lib/layui/layui.js" th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script type="text/javascript" src="js/xadmin.js" th:src="@{/js/xadmin.js}"></script>
 
 </head>
 <body>
@@ -39,11 +40,11 @@
             <a href="javascript:;">admin</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
                 <dd><a onClick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
-                <dd><a onClick="x_admin_show('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
+                <!--                <dd><a onClick="x_admin_show('切换帐号','http://www.baidu.com')">切换帐号</a></dd>-->
                 <dd><a href="login.html">退出</a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item to-index"><a href="#">前台首页</a></li>
+        <li class="layui-nav-item to-index"><a href="#" th:href="@{index.html}">前台首页</a></li>
     </ul>
 
 </div>
@@ -52,79 +53,70 @@
 <!-- 左侧菜单开始 -->
 <div class="left-nav">
     <div id="side-nav">
+        <!--以下展现的是管理员角色的模块-->
         <ul id="nav">
-            <li >
+            <!--主页-->
+            <li>
                 <a href="javascript:;">
                     <i class="iconfont">&#xe6eb;</i>
                     <cite>主页</cite>
                     <i class="iconfont nav_right">&#xe6a7;</i>
                 </a>
                 <ul class="sub-menu">
-                    <li><a _href="html/welcome.html"><i class="iconfont">&#xe6a7;</i><cite>控制台</cite></a></li >
+                    <li><a _href="html/welcome.html"><i class="iconfont">&#xe6a7;</i><cite>控制台</cite></a></li>
                 </ul>
             </li>
-<!--
-            <li >
+            <!--学生信息管理-->
+            <li>
                 <a href="javascript:;">
                     <i class="iconfont">&#xe6e4;</i>
-                    <cite>基本元素</cite>
+                    <cite>学生信息管理</cite>
                     <i class="iconfont nav_right">&#xe6a7;</i>
                 </a>
                 <ul class="sub-menu">
-                    <li><a _href="html/unicode.html"><i class="iconfont">&#xe6a7;</i><cite>图标字体</cite></a></li>
-                    <li><a _href="html/form1.html"><i class="iconfont">&#xe6a7;</i><cite>表单元素</cite></a></li>
-                    <li> <a _href="html/form2.html"><i class="iconfont">&#xe6a7;</i><cite>表单组合</cite></a></li>
-                    <li><a _href="html/buttons.html"><i class="iconfont">&#xe6a7;</i><cite>按钮</cite></a></li>
-                    <li><a _href="html/nav.html"><i class="iconfont">&#xe6a7;</i><cite>导航/面包屑</cite></a></li>
-                    <li><a _href="html/tab.html"><i class="iconfont">&#xe6a7;</i><cite>选项卡</cite></a></li>
-                    <li><a _href="html/progress-bar.html"><i class="iconfont">&#xe6a7;</i><cite>进度条</cite></a></li>
-                    <li><a _href="html/panel.html"><i class="iconfont">&#xe6a7;</i><cite>面板</cite></a></li>
-                    <li><a _href="html/badge.html"><i class="iconfont">&#xe6a7;</i><cite>微章</cite></a></li>
-                    <li><a _href="html/timeline.html"><i class="iconfont">&#xe6a7;</i><cite>时间线</cite></a></li>
-                    <li><a _href="html/table-element.html"><i class="iconfont">&#xe6a7;</i><cite>静态表格</cite></a></li>
-                    <li><a _href="html/anim.html"><i class="iconfont">&#xe6a7;</i><cite>动画</cite></a></li>
+                    <li><a _href="/studentManager" ><i class="iconfont">&#xe6a7;</i><cite>学生列表</cite></a></li>
                 </ul>
             </li>
--->
 
-
+            <!--裁判员信息管理-->
             <li>
-                <a href="javascript:;"><i class="iconfont">&#xe6f6;</i><cite>组件页面</cite><i class="iconfont nav_right">&#xe6a7;</i></a>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6f6;</i>
+                    <cite>裁判员信息管理</cite>
+                    <i class="iconfont nav_right">&#xe6a7;</i></a>
                 <ul class="sub-menu">
-                    <li><a _href="html/upload.html"><i class="iconfont">&#xe6a7;</i><cite>文件上传</cite></a></li>
-                    <li><a _href="html/page.html"><i class="iconfont">&#xe6a7;</i><cite>分页</cite></a></li>
-                    <!--<li><a _href="html/cate.html"><i class="iconfont">&#xe6a7;</i><cite>多级分类</cite></a></li>
-                    <li><a _href="html/carousel.html"><i class="iconfont">&#xe6a7;</i><cite>轮播图</cite></a></li>
-                    <li><a _href="html/city.html"><i class="iconfont">&#xe6a7;</i><cite>城市三级联动</cite></a></li>-->
+                    <li><a _href="/teacherManager"><i class="iconfont">&#xe6a7;</i><cite>裁判员列表</cite></a>
+                    </li>
                 </ul>
             </li>
-            <li >
+            <!--比赛项目信息管理-->
+            <li>
                 <a href="javascript:;">
                     <i class="iconfont">&#xe6b4;</i>
-                    <cite>排版布局</cite>
+                    <cite>比赛项目信息管理</cite>
                     <i class="iconfont nav_right">&#xe6a7;</i>
                 </a>
+
                 <ul class="sub-menu">
-                    <li><a _href="html/grid.html"><i class="iconfont">&#xe6a7;</i><cite>栅格</cite></a></li>
-                    <li><a _href="html/welcome2.html"><i class="iconfont">&#xe6a7;</i><cite>排版</cite></a></li>
+                    <li><a _href="/courseManager"><i class="iconfont">&#xe6a7;</i><cite>比赛项目列表</cite></a>
+                    </li>
                 </ul>
             </li>
-
+            <!--参赛成绩管理-->
             <li>
                 <a href="javascript:;">
                     <i class="iconfont">&#xe69e;</i>
-                    <cite>订单管理</cite>
+                    <cite>参赛成绩管理</cite>
                     <i class="iconfont nav_right">&#xe6a7;</i>
                 </a>
                 <ul class="sub-menu">
-                    <li>
-                        <a _href="html/order-list.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>订单列表</cite>
-                        </a>
-                    </li >
+                    <li><a _href="/studentCourseManager"><i class="iconfont">&#xe6a7;</i><cite>学生参赛信息列表</cite></a></li>
+                </ul>
+                <ul class="sub-menu">
+                    <li><a _href="/scoreManager"><i class="iconfont">&#xe6a7;</i><cite>学生比赛成绩列表</cite></a></li>
                 </ul>
             </li>
+            <!--管理员管理-->
             <li>
                 <a href="javascript:;">
                     <i class="iconfont">&#xe726;</i>
@@ -133,79 +125,14 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="html/admin-list.html">
+                        <a _href="/manager">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>管理员列表</cite>
                         </a>
-                    </li >
-                    <li>
-                        <a _href="html/admin-role.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>角色管理</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="html/admin-cate.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>权限分类</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="html/admin-rule.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>权限管理</cite>
-                        </a>
-                    </li >
+                    </li>
                 </ul>
             </li>
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe6b8;</i>
-                    <cite>用户管理</cite>
-                    <i class="iconfont nav_right">&#xe6a7;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="html/member-list.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>会员列表</cite>
-
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="html/member-del.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>会员删除</cite>
-
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:;">
-                            <i class="iconfont">&#xe70b;</i>
-                            <cite>会员管理</cite>
-                            <i class="iconfont nav_right">&#xe6a7;</i>
-                        </a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a _href="html/member-del.html">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>会员列表</cite>
-
-                                </a>
-                            </li >
-                            <li>
-                                <a _href="html/member-del.html">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>会员删除</cite>
-
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
-
-                </ul>
-            </li>
+            <!--系统统计-->
             <li>
                 <a href="javascript:;">
                     <i class="iconfont">&#xe6ae;</i>
@@ -218,51 +145,20 @@
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>拆线图</cite>
                         </a>
-                    </li >
+                    </li>
                     <li>
                         <a _href="html/echarts2.html">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>柱状图</cite>
                         </a>
                     </li>
-                    <li>
-                        <a _href="html/echarts3.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>地图</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="html/echarts4.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>饼图</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="html/echarts5.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>雷达图</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="html/echarts6.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>k线图</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="html/echarts7.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>热力图</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="html/echarts8.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>仪表图</cite>
-                        </a>
-                    </li>
+
                 </ul>
-            </li>            </ul>
+            </li>
+        </ul>
+        <!--以下展现的是裁判角色的模块-->
+
+        <!--以下展现的是学生角色的模块-->
     </div>
 </div>
 <!-- <div class="x-slide_left"></div> -->
@@ -275,9 +171,9 @@
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <p style="color:red" th:text="${age}" th:if="${not #strings.isEmpty(age)}"></p>
+                <!--                <p style="color:red" th:text="${age}" th:if="${not #strings.isEmpty(age)}"></p>-->
 
-                <!--<iframe src='html/welcome.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>-->
+                <iframe src='html/welcome.html' th:src="@{html/welcome.html}" frameborder="0" scrolling="yes" class="x-iframe"></iframe>
             </div>
         </div>
     </div>
@@ -290,5 +186,11 @@
     <div class="copyright">Copyright ©2019 L-admin v2.3 All Rights Reserved</div>
 </div>-->
 <!-- 底部结束 -->
+
+<script>
+    /*登录页 radio-管理员 就展现此页面的功能模块*/
+    /*登录页 radio-裁判 就展示裁判所包含的功能模块*/
+    /*登录页 radio-学生 就展现学生所包含的功能模块*/
+</script>
 </body>
 </html>
