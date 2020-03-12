@@ -1,7 +1,7 @@
 package com.jennifer.sportsmeeting.controller;
 
 import com.jennifer.sportsmeeting.bean.Manager;
-import com.jennifer.sportsmeeting.exception.ManagerException;
+import com.jennifer.sportsmeeting.exception.MyException;
 import com.jennifer.sportsmeeting.service.ManagerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +76,7 @@ public class LoginController {
     @ResponseBody
     public String home(@RequestParam("user") String user)throws Exception{
         if(user.equals("111")){
-            throw new ManagerException(12,"ss");
+            throw new MyException(12,"ss");
         }
         return "success";//不是直接跳转到classpasth:/templates/路径下的login.html页面，而是跳转字符串页面
 

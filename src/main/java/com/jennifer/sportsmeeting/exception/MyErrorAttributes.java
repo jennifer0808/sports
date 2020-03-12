@@ -11,7 +11,7 @@ public class MyErrorAttributes extends DefaultErrorAttributes {
     @Override
     public Map<String, Object> getErrorAttributes(WebRequest webRequest, boolean includeStackTrace) {
         Map<String,Object> map = super.getErrorAttributes(webRequest, includeStackTrace);
-        map.put("msg","这是自定义的错误消息");
+//        map.put("msg","这是自定义的错误消息");
         Map<String,Object> mef  = (Map<String, Object>) webRequest.getAttribute("me",0);
         map.put("mef",mef);
         return  map;

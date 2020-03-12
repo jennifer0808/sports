@@ -3,7 +3,7 @@ package com.jennifer.sportsmeeting.exception;
 /**
  * 自定义异常
  */
-public class ManagerException extends RuntimeException{
+public class MyException extends RuntimeException{
     /**
      * 状态码（声明 code 用于定义不同类型的自定义异常）
      */
@@ -17,7 +17,7 @@ public class ManagerException extends RuntimeException{
         this.code = code;
     }
 
-    public ManagerException(Integer code,String msg){
+    public MyException(Integer code, String msg){
         super(msg);
         this.code=code;
     }

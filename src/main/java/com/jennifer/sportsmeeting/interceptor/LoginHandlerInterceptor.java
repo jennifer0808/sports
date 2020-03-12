@@ -25,7 +25,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
             // 获取request转发页面到登录页
             request.getRequestDispatcher("/index.html").forward(request,response);
             //30分钟后session失效
-            request.getSession().setMaxInactiveInterval(30 * 60);
+          //  request.getSession().setMaxInactiveInterval(30 * 60);
             return false;
 
         }else{//已登录，放行请求
