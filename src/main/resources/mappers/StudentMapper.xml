@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jennifer.sportsmeeting.mapper.StudentMapper">
+    <resultMap id="StudentList" type="com.jennifer.sportsmeeting.bean.Student">
+        <id column="s_id" jdbcType="VARCHAR"  property="sId"/>
+        <result column="s_username" jdbcType="VARCHAR" property="sUsername"/>
+        <result column="s_password" jdbcType="VARCHAR" property="sPassword"/>
+        <result column="s_class" jdbcType="VARCHAR" property="sClass"/>
+        <result column="s_major" jdbcType="VARCHAR" property="sMajor"/>
+        <result column="s_sex" jdbcType="CHAR" property="sSex"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        s_id,s_username,s_password,s_class,s_major,s_sex,create_time
+    </sql>
+
+    <!--查询所有-->
+    <select id="selectListStudent" resultMap="StudentList">
+        select
+        <include refid="Base_Column_List"/>
+        from student
+    </select>
+
+
+</mapper>
+

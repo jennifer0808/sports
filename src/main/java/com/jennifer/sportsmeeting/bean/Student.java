@@ -1,50 +1,103 @@
 package com.jennifer.sportsmeeting.bean;
-/*t_id  t_username  t_password*/
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
 
-public class Student {
-    private String tid;
-    private String tusername;
-    private String tpassword;
+/**
+ * s_id  s_username  s_password  s_class    s_major  s_sex  create_time
+ */
+public class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String sId;
+    private String sUsername;
+    private String sPassword;
+    private String sClass;
+    private String sMajor;
+    private Character sSex;
+    private Date createTime;
 
-    public Student(){
+    public Student(){super();}
+
+    public Student(String sId, String sUsername, String sPassword, String sClass, String sMajor, Character sSex, Date createTime) {
+        this.sId = sId;
+        this.sUsername = sUsername;
+        this.sPassword = sPassword;
+        this.sClass = sClass;
+        this.sMajor = sMajor;
+        this.sSex = sSex;
+        this.createTime = createTime;
     }
 
-    public Student(String tid, String tusername, String tpassword) {
-        this.tid = tid;
-        this.tusername = tusername;
-        this.tpassword = tpassword;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public String getTid() {
-        return tid;
+    public String getsId() {
+        return sId;
     }
 
-    public void setTid(String tid) {
-        this.tid = tid;
+    public void setsId(String sId) {
+        this.sId = sId;
     }
 
-    public String getTusername() {
-        return tusername;
+    public String getsUsername() {
+        return sUsername;
     }
 
-    public void setTusername(String tusername) {
-        this.tusername = tusername;
+    public void setsUsername(String sUsername) {
+        this.sUsername = sUsername;
     }
 
-    public String getTpassword() {
-        return tpassword;
+    public String getsPassword() {
+        return sPassword;
     }
 
-    public void setTpassword(String tpassword) {
-        this.tpassword = tpassword;
+    public void setsPassword(String sPassword) {
+        this.sPassword = sPassword;
+    }
+
+    public String getsClass() {
+        return sClass;
+    }
+
+    public void setsClass(String sClass) {
+        this.sClass = sClass;
+    }
+
+    public String getsMajor() {
+        return sMajor;
+    }
+
+    public void setsMajor(String sMajor) {
+        this.sMajor = sMajor;
+    }
+
+    public Character getsSex() {
+        return sSex;
+    }
+
+    public void setsSex(Character sSex) {
+        this.sSex = sSex;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     @Override
     public String toString() {
         return "Student{" +
-                "tid='" + tid + '\'' +
-                ", tusername='" + tusername + '\'' +
-                ", tpassword='" + tpassword + '\'' +
+                "sId='" + sId + '\'' +
+                ", sUsername='" + sUsername + '\'' +
+                ", sPassword='" + sPassword + '\'' +
+                ", sClass='" + sClass + '\'' +
+                ", sMajor='" + sMajor + '\'' +
+                ", sSex='" + sSex + '\'' +
+                ", createTime='" + createTime + '\'' +
                 '}';
     }
 }
