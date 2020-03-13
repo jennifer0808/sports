@@ -7,16 +7,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLException;
 import java.util.List;
 
-@Service(value = "studentService")
 
+@Service(value = "studentService")
 public class StudentServiceImpl implements StudentService {
 private final static Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     @Autowired
     private StudentMapper studentMapper;
+
+    /**
+     * 查询列表--TODO：未做事务
+     * @return
+     */
     @Override
     public List<Student> findAllStudent() {
         List<Student> list = null;
@@ -25,9 +28,7 @@ private final static Logger logger = LoggerFactory.getLogger(StudentServiceImpl.
         }catch (Exception e){
             logger.error("StudentServiceImpl findAllStudent():"+e.getMessage());
         }
-
-
-        return null;
+        return list;
     }
 
     @Override
