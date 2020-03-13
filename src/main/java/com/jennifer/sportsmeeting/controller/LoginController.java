@@ -18,11 +18,10 @@ public class LoginController {
     private final static Logger logger = LoggerFactory.getLogger(ManagerController.class);
 
     @Autowired
-    private ManagerService managerService;
+    private ManagerService managerService; //相当于 ManagerService managerService = new ManagerServiceImpl();
 
     @GetMapping("login")//可任意设置路径
     public String gologin() {
-        logger.info("goto...login");
         return "login";
     }
 
@@ -35,30 +34,37 @@ public class LoginController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "/login")
-    public String login(@RequestParam("mUsername") String mUsername, @RequestParam("mPassword") String mPassword, HttpSession session, Map<String, Object> map) {
+    @PostMapping(value = "/login")
+    public String login(@RequestParam("role") String role, @RequestParam("mUsername") String mUsername, @RequestParam("mPassword") String mPassword, HttpSession session, Map<String, Object> map) {
         //验证用户名密码，正确，跳转到manager.html,错误，清空session，提示用户名密码错误
-        logger.info("username:" + mUsername + ";password:" + mPassword);
-        if (mUsername != null && mPassword != null && !"".equals(mUsername) && !"".equals(mPassword)) {
-            Manager man = managerService.login(new Manager(mUsername, mPassword));
-            if (!GlobalConstant.ifFlag) {
-                if (man != null && !"".equals(man)) {
-                    if (man.getmUsername().equals(mUsername) && man.getmPassword().equals(mPassword)) {
-                        session.setAttribute("username", mUsername);
-                        logger.info("username:" + man.getmUsername());
-                        map.put("age", 23);
-                    }
-                    return "redirect:/loginManager.html";//防止浏览器中表单重复提交
-                } else {
-                    session.invalidate();
-                    map.put("msg", "用户名密码错误");
-                    return "login";
-                }
-            } else {
-                logger.error("man:" + man);
-                throw new MyException(120, "selectUserByManager SQL is fault");
-            }
+        logger.info("username:" + mUsername + ";password:" + mPassword + ";role:" + role);
 
+        if (mUsername != null && mPassword != null && !"".equals(mUsername) && !"".equals(mPassword)) {
+            Manager manager = managerService.login(new Manager(mUsername, mPassword));
+            if ("管理员".equals(role)) {
+                if (!GlobalConstant.ifFlag) {
+                    if (manager != null && manager.getmUsername().equals(mUsername) && manager.getmPassword().equals(mPassword)) {
+                        session.setAttribute("username", mUsername);
+                        logger.info("username:" + manager.getmUsername());
+                        return "redirect:/loginManager.html";//防止浏览器中表单重复提交
+                    } else {
+                        session.invalidate();
+                        map.put("msg", "用户名密码错误");
+                        return "login";
+                    }
+                } else {
+                    logger.error("manager:" + manager);
+                    throw new MyException(120, "selectUserByManager SQL is fault");
+                }
+            } else if ("裁判".equals(role)) {
+                session.invalidate();
+                map.put("msg", "裁判角色登录");
+                return "login";
+            } else {
+                session.invalidate();
+                map.put("msg", "学生角色登录");
+                return "login";
+            }
         } else {
             session.invalidate();
             map.put("msg", "用户名密码为空");
@@ -66,6 +72,8 @@ public class LoginController {
         }
 
     }
+
+//    public void
 
 
     /**

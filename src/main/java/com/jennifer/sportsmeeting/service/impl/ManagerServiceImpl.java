@@ -21,6 +21,12 @@ public class ManagerServiceImpl implements ManagerService {
     @Autowired
     private ManagerMapper managerMapper;
 
+    /**
+     * 管理员登录
+     * @param manager
+     * @return
+     * @throws MyException
+     */
     @Transactional(readOnly = true)
     @Override
     public Manager login(Manager manager) throws MyException{
@@ -30,6 +36,7 @@ public class ManagerServiceImpl implements ManagerService {
         } catch (Exception e) {
             GlobalConstant.ifFlag = true;
             logger.error("ManagerServiceImpl login():"+e.getMessage());
+
         }
         return m;
     }

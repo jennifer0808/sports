@@ -1,42 +1,49 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
- <head> 
-  <title>Smart Error Page Responsive Widget Template| 404Pagefree.com</title> 
-  <!-- Meta tag Keywords --> 
-  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-  <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
-function hideURLbar(){ window.scrollTo(0,1); } </script> 
-  <!-- Meta tag Keywords --> 
-  <!-- css files --> 
-  <link href="/css/style1.css" rel="stylesheet" type="text/css" media="all" />
-  <!-- //css files --> 
-  <!-- online-fonts --> 
-  <link href="http://fonts.googleapis.com/css?family=Ropa+Sans:400,400i&amp;subset=latin-ext"  rel="stylesheet" />
-  <!--//online-fonts --> 
- </head> 
- <body> 
-  <div class="header"> 
-   <h1>Smart error page</h1> 
-  </div> 
-  <div class="w3-main"> 
-   <div class="agile-info"> 
-    <h3>SORRY</h3> 
-    <h2>4<img src="/img/confused.gif" alt="image" />4</h2>
-    <p>请求的资源不正确</p>
-    <p> exception：[[${exception}]] </p>
-    <p>message：[[${message}]]</p>
-    <p>status：[[${status}]]</p>
-    <p>timestamp：[[${timestamp}]]</p>
+<head>
+    <title>Smart Error Page Responsive Widget Template| 404Pagefree.com</title>
+    <!-- Meta tag Keywords -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
 
-    <p>An error Occurred in the Application And Your Page could not be Served.</p>
-    <a href="#">go back</a> 
-   </div>
-  </div> 
-  <div class="footer-w3l"> 
-   <p>&copy; <script type="text/javascript">
-  document.write(new Date().getFullYear());
-</script> Smart Error Page. All rights reserved | Design by <a href="http://404Pagefree.com">404Pagefree</a></p> 
-  </div>  
- </body>
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <!-- Meta tag Keywords -->
+    <!-- css files -->
+    <link href="/css/style1.css" th:href="@{/css/style1.css}" rel="stylesheet" type="text/css" media="all"/>
+    <!-- //css files -->
+    <!-- online-fonts -->
+    <link href="http://fonts.googleapis.com/css?family=Ropa+Sans:400,400i&amp;subset=latin-ext" rel="stylesheet"/>
+    <!--//online-fonts -->
+</head>
+<body>
+<div class="header">
+    <h1>Smart error page</h1>
+</div>
+<div class="w3-main">
+    <div class="agile-info">
+        <h3>SORRY</h3>
+        <h2>4<img th:src="@{/images/confused.gif}" alt="image"/>4</h2>
+        <p>请求的资源不正确</p>
+        <p> exception：[[${exception}]] </p>
+        <p>message：[[${message}]]</p>
+        <p>status：[[${status}]]</p>
+        <p>timestamp：[[${timestamp}]]</p>
+
+        <p>An error Occurred in the Application And Your Page could not be Served.</p>
+        <a href="#">go back</a>
+    </div>
+</div>
+<div class="footer-w3l">
+    <p>&copy;
+        <script type="text/javascript">
+            document.write(new Date().getFullYear());
+        </script>
+        Smart Error Page. All rights reserved | Design by <a href="http://404Pagefree.com">404Pagefree</a></p>
+</div>
+</body>
 </html>

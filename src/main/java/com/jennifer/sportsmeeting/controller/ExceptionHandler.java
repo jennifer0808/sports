@@ -24,7 +24,7 @@ public class ExceptionHandler {
              message = MessageUtil.error(myException.getCode(),myException.getMessage());
 
         }else{
-             message = MessageUtil.error(120,"异常信息："+exception.getMessage());
+             message = MessageUtil.error(110,"异常信息："+exception.getMessage());
         }
        //设置状态码
         request.setAttribute("javax.servlet.error.status_code",500);
