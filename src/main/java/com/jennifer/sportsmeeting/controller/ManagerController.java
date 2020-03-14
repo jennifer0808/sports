@@ -1,17 +1,14 @@
 package com.jennifer.sportsmeeting.controller;
 
 import com.jennifer.sportsmeeting.bean.Student;
-import com.jennifer.sportsmeeting.exception.MyException;
 import com.jennifer.sportsmeeting.service.ManagerService;
 import com.jennifer.sportsmeeting.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -31,7 +28,7 @@ public class ManagerController {
 
 
     /**
-     * get到浏览器请求，响应-学生信息管理
+     * 学生信息管理-查询所有
      *
      * @return
      */

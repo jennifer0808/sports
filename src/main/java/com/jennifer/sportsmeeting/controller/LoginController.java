@@ -57,13 +57,28 @@ public class LoginController {
                     throw new MyException(120, "selectUserByManager SQL is fault");
                 }
             } else if ("裁判".equals(role)) {
-                session.invalidate();
-                map.put("msg", "裁判角色登录");
-                return "login";
+//                session.invalidate();
+//                map.put("msg", "裁判角色登录");
+                if("1".equals(mUsername)){
+                    session.setAttribute("username", mUsername);
+                    return "redirect:/loginTeacher.html";
+                }else{
+                    session.invalidate();
+                    map.put("msg", "学生角色登录");
+                    return "login";
+                }
+
             } else {
-                session.invalidate();
-                map.put("msg", "学生角色登录");
-                return "login";
+//                session.invalidate();
+//                map.put("msg", "学生角色登录");
+                if("2".equals(mUsername)) {
+                    session.setAttribute("username", mUsername);
+                    return "redirect:/loginStudent.html";
+                }else{
+                    session.invalidate();
+                    map.put("msg", "学生角色登录");
+                    return "login";
+                }
             }
         } else {
             session.invalidate();

@@ -21,7 +21,8 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
         //视图映射：浏览器发送/xxx 请求来到login
         registry.addViewController("/index.html").setViewName("login");
         registry.addViewController("/loginManager.html").setViewName("main");
-
+        registry.addViewController("/loginTeacher.html").setViewName("mainTeacher");
+        registry.addViewController("/loginStudent.html").setViewName("mainStudent");
     }
 
 

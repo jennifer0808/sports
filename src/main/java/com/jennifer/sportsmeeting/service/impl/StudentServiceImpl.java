@@ -31,6 +31,11 @@ private final static Logger logger = LoggerFactory.getLogger(StudentServiceImpl.
         return list;
     }
 
+    /**
+     * 修改
+     * @param student
+     * @return
+     */
     @Override
     public int modifyStudent(Student student) {
         return 0;

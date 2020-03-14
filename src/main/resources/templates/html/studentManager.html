@@ -40,33 +40,33 @@
         <form class="layui-form layui-col-md12 x-so">
             <input class="layui-input" placeholder="开始日" name="start" id="start">
             <input class="layui-input" placeholder="截止日" name="end" id="end">
+            <input type="text" name="username" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            <input type="text" name="username" placeholder="请输入班级" autocomplete="off" class="layui-input">
             <div class="layui-input-inline">
                 <select name="contrller">
-                    <option>支付状态</option>
-                    <option>已支付</option>
-                    <option>未支付</option>
+                    <option>性别</option>
+                    <option>男</option>
+                    <option>女</option>
                 </select>
             </div>
             <div class="layui-input-inline">
                 <select name="contrller">
-                    <option>支付方式</option>
-                    <option>支付宝</option>
-                    <option>微信</option>
-                    <option>货到付款</option>
+                    <option value="">专业</option>
+                    <option value="0">Math</option>
+                    <option value="1">Computer</option>
+                    <option value="1">China</option>
+                    <option value="1">English</option>
+                    <option value="1">Art</option>
+                    <option value="1">Physics</option>
+                    <option value="1">Chemistry</option>
+                    <option value="1">Java</option>
+                    <option value="1">C</option>
+                    <option value="1">C++</option>
+                    <option value="1">Python</option>
+                    <option value="1">BootStrap</option>
                 </select>
             </div>
-            <div class="layui-input-inline">
-                <select name="contrller">
-                    <option value="">订单状态</option>
-                    <option value="0">待确认</option>
-                    <option value="1">已确认</option>
-                    <option value="2">已收货</option>
-                    <option value="3">已取消</option>
-                    <option value="4">已完成</option>
-                    <option value="5">已作废</option>
-                </select>
-            </div>
-            <input type="text" name="username" placeholder="请输入订单号" autocomplete="off" class="layui-input">
+
             <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
@@ -111,8 +111,8 @@
                 <td th:text="${student.sSex}">未支付</td>
                 <td th:text="${student.createTime}">未发货</td>
                 <td class="td-manage">
-                    <a title="查看" onclick="x_admin_show('编辑','order-view.html')" href="javascript:;">
-                        <i class="layui-icon">&#xe63c;</i>
+                    <a title="编辑"  onclick="x_admin_show('编辑','/html/editStudentManager.html')" href="javascript:;">
+                        <i class="layui-icon">&#xe642;</i>
                     </a>
                     <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
                         <i class="layui-icon">&#xe640;</i>
