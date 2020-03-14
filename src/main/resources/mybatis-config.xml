@@ -33,9 +33,9 @@
         <setting name="jdbcTypeForNull" value="NULL"/>
     </settings>
     <!--typeAliases这个属性 给实体类起一个别名  -->
-    <typeAliases>
-         <typeAlias alias="manager" type="com.jennifer.sportsmeeting.bean.Manager" />
-    </typeAliases>
+<!--    <typeAliases>-->
+<!--         <typeAlias alias="manager" type="com.jennifer.sportsmeeting.bean.Manager" />-->
+<!--    </typeAliases>-->
 
 </configuration>
 
