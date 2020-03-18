@@ -1,5 +1,6 @@
 package com.jennifer.sportsmeeting.mapper;
 
+import com.github.pagehelper.Page;
 import com.jennifer.sportsmeeting.bean.Student;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,12 @@ public interface StudentMapper {
      * 查询所有
      */
      List<Student> selectListStudent();
+
+    /**
+     * 分页查询
+     * @return
+     */
+     List<Student> selectByPage();
 
     /**
      * 修改

@@ -12,8 +12,9 @@
     <link rel="stylesheet" href="../css/font.css" th:href="@{/css/font.css}">
     <link rel="stylesheet" href="../css/xadmin.css" th:href="@{/css/xadmin.css}">
 
+
     <script src="../js/jquery.min.js" th:href="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-    <script type="text/javascript" src="../lib/layui/layui.js" th:href="@{/lib/layui/layui.js}"
+    <script type="text/javascript" src="../lib/layui/layui.js" th:href="@{/lib/dist/layui.js}"
             charset="utf-8"></script>
     <script type="text/javascript" src="../js/xadmin.js" th:href="@{/js/xadmin.js}"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -74,9 +75,11 @@
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加用户','./order-add.html')"><i class="layui-icon"></i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+        <span class="x-right spanval" style="line-height:40px"> 当前 <span th:text="${pageInfo.pageNum}"></span> 页,总 <span
+                th:text="${pageInfo.pages}"></span> 页,共 <span
+                th:text="${pageInfo.total}"></span> 条记录</span>
     </xblock>
-    <table class="layui-table">
+    <table class="layui-table" id="test">
         <thead>
         <tr>
             <th>
@@ -95,9 +98,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="student:${studentList}">
+        <tr th:each="student:${pageInfo.list}">
             <!--页面th:block对studentList进行判空-->
-            <th:block th:if="${not #lists.isEmpty(studentList)}">
+            <th:block th:if="${not #lists.isEmpty(pageInfo.list)}">
                 <td>
                     <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i
                             class="layui-icon">&#xe605;</i></div>
@@ -111,7 +114,7 @@
                 <td th:text="${student.sSex}">未支付</td>
                 <td th:text="${student.createTime}">未发货</td>
                 <td class="td-manage">
-                    <a title="编辑"  onclick="x_admin_show('编辑','/html/editStudentManager.html')" href="javascript:;">
+                    <a title="编辑" onclick="x_admin_show('编辑','/html/editStudentManager.html')" href="javascript:;">
                         <i class="layui-icon">&#xe642;</i>
                     </a>
                     <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
@@ -122,19 +125,67 @@
         </tr>
         </tbody>
     </table>
+    <table class="layui-table" id="test"></table>
+
+
+    <!--分页-->
     <div class="page">
         <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
+
+            <a class="prev" href=""
+               th:href="@{/studentManager(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}">&lt;&lt;</a>
+            <a class="num" href="" th:href="@{/studentManager}">首页</a><!-- -->
+<!--            <span class="current">2</span>-->
+<!--            <a class="num" href="">...</a>-->
+            <a class="num" href="" th:href="@{/studentManager(pageNum=${pageInfo.pages})}">尾页</a>
+            <a class="next" href=""
+               th:href="@{/studentManager(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}">&gt;&gt;</a>
+
         </div>
     </div>
 
 </div>
+<!--<script type="text/html" id="barDemo">-->
+<!--    <a title="编辑" onclick="x_admin_show('编辑','/html/editStudentManager.html')" href="javascript:;">-->
+<!--        <i class="layui-icon">&#xe642;</i>-->
+<!--    </a>-->
+<!--    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">-->
+<!--        <i class="layui-icon">&#xe640;</i>-->
+<!--    </a>-->
+<!--</script>-->
 <script>
+
+    /*分页*/
+    // layui.use(['form','laypage','layer','table','element'], function () {
+    //     var form = layui.form
+    //         ,laypage = layui.laypage //分页
+    //         ,layer = layui.layer //弹层
+    //         ,table = layui.table //表格
+    //         ,element = layui.element //元素操作
+    //     table.render({
+    //         elem: '#test'
+    //         , url: '/studentManager'//数据接口
+    //         , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+    //         , title: 'student'
+    //         , page: true //开启分页
+    //         , cols: [
+    //             [
+    //                 {type: 'checkbox', fixed: 'left'}
+    //                 , {field: 's_id', width: 80, title: 'ID', sort: true, fixed: 'left'}
+    //                 , {field: 's_username', width: 80, title: '用户名'}
+    //                 , {field: 's_password', width: 80, title: '密码', sort: true}
+    //                 , {field: 's_class', width: 80, title: '班级'}
+    //                 , {field: 's_major', title: '专业'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+    //                 , {field: 's_sex', title: '性别', sort: true}
+    //                 , {field: 'create_time', title: '创建日期', sort: true}
+    //                 , {fixed: 'right', width: 165, align: 'center',title: '操作', toolbar: '#barDemo'}
+    //
+    //             ]
+    //         ]
+    //     });
+    // });
+
+
     layui.use('laydate', function () {
         var laydate = layui.laydate;
 

@@ -21,31 +21,37 @@
         <include refid="Base_Column_List"/>
         from student
     </select>
+    <!--分页查询-->
+    <select id="selectByPage" resultMap="StudentList">
+        select
+        <include refid="Base_Column_List"/>
+        from student
+    </select>
     <!--修改-->
     <update id="updateStudent" parameterType="com.jennifer.sportsmeeting.mapper.StudentMapper">
-    update  student
-    <set>
-        <if test="sUsername != null">
-            s_username = #{sUsername,jdbcType=VARCHAR}
-        </if>
-        <if test="sPassword != null">
-            s_password = #{sPassword,jdbcType=VARCHAR}
-        </if>
-        <if test="sClass != null">
-            s_class = #{sClass,jdbcType=VARCHAR}
-        </if>
-        <if test="sMajor != null">
-            s_major = #{sMajor,jdbcType=VARCHAR}
-        </if>
-        <if test="sSex != null">
-            s_sex = #{sSex,jdbcType=CHAR}
-        </if>
-        <if test="createTime != null">
-            create_time = #{createTime,jdbcType=TIMESTAMP}
-        </if>
+        update student
+        <set>
+            <if test="sUsername != null">
+                s_username = #{sUsername,jdbcType=VARCHAR}
+            </if>
+            <if test="sPassword != null">
+                s_password = #{sPassword,jdbcType=VARCHAR}
+            </if>
+            <if test="sClass != null">
+                s_class = #{sClass,jdbcType=VARCHAR}
+            </if>
+            <if test="sMajor != null">
+                s_major = #{sMajor,jdbcType=VARCHAR}
+            </if>
+            <if test="sSex != null">
+                s_sex = #{sSex,jdbcType=CHAR}
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
 
-    </set>
-    where s_id = #{sId,jdbcType=VARCHAR}
+        </set>
+        where s_id = #{sId,jdbcType=VARCHAR}
     </update>
 
 

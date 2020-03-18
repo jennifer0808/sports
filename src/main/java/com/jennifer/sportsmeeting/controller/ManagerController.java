@@ -1,5 +1,7 @@
 package com.jennifer.sportsmeeting.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.jennifer.sportsmeeting.bean.Student;
 import com.jennifer.sportsmeeting.service.ManagerService;
 import com.jennifer.sportsmeeting.service.StudentService;
@@ -7,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -32,15 +34,26 @@ public class ManagerController {
      *
      * @return
      */
-    @RequestMapping("/studentManager")
-    public ModelAndView StudentManager(ModelAndView modelAndView) {
-        ModelAndView mv = new ModelAndView();
-        List<Student> list = studentService.findAllStudent();
-        mv.addObject("studentList", list);//页面对list进行判空
-        mv.setViewName("/html/studentManager");
-        return mv;
+//    @RequestMapping("/studentManager")
+//    public ModelAndView StudentManager(ModelAndView modelAndView) {
+//        ModelAndView mv = new ModelAndView();
+//        List<Student> list = studentService.findAllStudent();
+//        mv.addObject("studentList", list);//页面对list进行判空
+//        mv.setViewName("/html/studentManager");
+//        return mv;
+//    }
 
+
+    @GetMapping("/studentManager")
+    public String StudentManager(Model model,@RequestParam(defaultValue = "1",value = "pageNum") Integer pageNum){
+        List<Student> list = studentService.findByPage(pageNum,6);//pageSize相当于limit角色
+        logger.info("list:"+list+";pageNum:"+pageNum);
+        PageInfo<Student> pageInfo = new PageInfo<Student>(list);
+        model.addAttribute("pageInfo",pageInfo);
+        return "/html/studentManager";
     }
+
+
 
 
     /**

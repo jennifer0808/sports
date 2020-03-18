@@ -1,5 +1,8 @@
 package com.jennifer.sportsmeeting.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jennifer.sportsmeeting.bean.Student;
 import com.jennifer.sportsmeeting.mapper.StudentMapper;
 import com.jennifer.sportsmeeting.service.StudentService;
@@ -7,17 +10,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 
 @Service(value = "studentService")
+@Transactional(readOnly = true)
 public class StudentServiceImpl implements StudentService {
 private final static Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     @Autowired
     private StudentMapper studentMapper;
 
     /**
-     * 查询列表--TODO：未做事务
+     * 查询列表--TODO：查询不用做事务
      * @return
      */
     @Override
@@ -28,6 +34,21 @@ private final static Logger logger = LoggerFactory.getLogger(StudentServiceImpl.
         }catch (Exception e){
             logger.error("StudentServiceImpl findAllStudent():"+e.getMessage());
         }
+        return list;
+    }
+
+
+
+    /**
+     * 分页查询
+     * @param pageNo 页号
+     * @param pageSize 每页显示记录数-limit
+     * @return
+     */
+    @Override
+    public List<Student> findByPage(int pageNo, int pageSize) {
+        PageHelper.startPage(pageNo,pageSize);//在startPage后面紧跟的查询会变成一个分页查询
+        List<Student> list = studentMapper.selectByPage();
         return list;
     }
 
@@ -47,6 +68,7 @@ private final static Logger logger = LoggerFactory.getLogger(StudentServiceImpl.
     }
 
     @Override
+    @Transactional
     public int addStudent(Student student) {
         return 0;
     }
