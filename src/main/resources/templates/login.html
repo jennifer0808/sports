@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="/css/font.css" th:href="@{/css/font.css}">
     <link rel="stylesheet" href="/css/xadmin.css" th:href="@{/css/xadmin.css}">
 
-    <script src="../js/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-    <script src="../lib/layui/layui.js" th:src="@{lib/layui/layui.js}"></script>
-    <script type="text/javascript" src="../js/xadmin.js" th:src="@{js/xadmin.js}"></script>
+    <script src="../js/jquery.min.js"  th:src="@{/js/jquery.min.js}"></script>
+    <script src="../lib/layui/layui.js" th:src="@{/lib/layui/layui.js}"></script>
+    <script type="text/javascript" src="../js/xadmin.js" th:src="@{/js/xadmin.js}"></script>
 </head>
 <body>
 
@@ -26,8 +26,8 @@
         <!--登录页-->
         <form class="login-form layui-form" lay-filter="component-form-element" th:action="@{/login}" method="post">
             <h2 style="text-align: center">管理登录</h2>
-            <div class="layui-card-body layui-row layui-col-space10">
-                <div class="layui-col-md12">
+            <div class="layui-card-body layui-row layui-col-space15">
+                <div class="layui-col-md12 ">
                     <input type="radio" class="same" name="role" value="管理员" title="管理员" checked>
                     <input type="radio" class="same" name="role" value="裁判" title="裁判">
                     <input type="radio" class="same other" name="role" value="学生" title="学生">
