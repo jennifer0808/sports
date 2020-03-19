@@ -21,12 +21,26 @@
         <include refid="Base_Column_List"/>
         from student
     </select>
+
     <!--分页查询-->
     <select id="selectByPage" resultMap="StudentList">
         select
         <include refid="Base_Column_List"/>
         from student
+        <if test='keyWord!="" or keyWord!=null'>
+            where s_username LIKE '%${keyWord}%'
+        </if>
+        limit #{page},#{limit}
     </select>
+
+    <!--查询数据总数-->
+    <select id="selectAllCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(*) from student
+        <if test='parameter!="" or parameter!=null '>
+            where s_username LIKE '%${keyWord}%'
+        </if>
+    </select>
+
     <!--修改-->
     <update id="updateStudent" parameterType="com.jennifer.sportsmeeting.mapper.StudentMapper">
         update student

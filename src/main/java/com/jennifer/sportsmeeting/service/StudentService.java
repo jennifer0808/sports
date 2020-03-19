@@ -22,7 +22,7 @@ public interface StudentService {
      * @param pageSize 每页显示记录数
      * @return
      */
-    List<Student> findByPage(int pageNo,int pageSize);
+    List<Student> findByPage(int pageNo,int pageSize,String keyWord);
 
     /**
      * 修改

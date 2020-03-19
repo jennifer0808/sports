@@ -11,10 +11,10 @@
     <link rel="shortcut icon" href="/favicon.ico" th:href="@{/favicon.ico}" type="image/x-icon"/>
     <link rel="stylesheet" href="../css/font.css" th:href="@{/css/font.css}">
     <link rel="stylesheet" href="../css/xadmin.css" th:href="@{/css/xadmin.css}">
+    <!--    <link rel="stylesheet" href="lib/layui/css/layui.css" th:href="">-->
 
-
-    <script src="../js/jquery.min.js" th:href="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-    <script type="text/javascript" src="../lib/layui/layui.js" th:href="@{/lib/dist/layui.js}"
+    <script src="../js/jquery.min.js" th:href="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" src="../lib/layui/layui.js" th:href="@{/lib/layui/layui.js}"
             charset="utf-8"></script>
     <script type="text/javascript" src="../js/xadmin.js" th:href="@{/js/xadmin.js}"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -22,6 +22,11 @@
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .layui-laypage {
+            margin-left: 35vm;
+        }
+    </style>
 </head>
 
 <body>
@@ -36,13 +41,14 @@
        href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon" style="line-height:38px">ဂ</i></a>
 </div>
+
 <div class="x-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
             <input class="layui-input" placeholder="开始日" name="start" id="start">
             <input class="layui-input" placeholder="截止日" name="end" id="end">
-            <input type="text" name="username" placeholder="请输入姓名" autocomplete="off" class="layui-input">
-            <input type="text" name="username" placeholder="请输入班级" autocomplete="off" class="layui-input">
+            <input type="text" name="sUsername" placeholder="请输入姓名" id="sear1" autocomplete="off" class="layui-input">
+            <input type="text" name="sClass" placeholder="请输入班级" autocomplete="off" class="layui-input">
             <div class="layui-input-inline">
                 <select name="contrller">
                     <option>性别</option>
@@ -75,116 +81,172 @@
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加用户','./order-add.html')"><i class="layui-icon"></i>添加
         </button>
-        <span class="x-right spanval" style="line-height:40px"> 当前 <span th:text="${pageInfo.pageNum}"></span> 页,总 <span
-                th:text="${pageInfo.pages}"></span> 页,共 <span
-                th:text="${pageInfo.total}"></span> 条记录</span>
     </xblock>
-    <table class="layui-table" id="test">
-        <thead>
-        <tr>
-            <th>
-                <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i
-                        class="layui-icon">&#xe605;</i></div>
-            </th>
-            <th>序列</th>
-            <th>学号</th>
-            <th>姓名</th>
-            <th>登录密码</th>
-            <th>班级</th>
-            <th>专业</th>
-            <th>性别</th>
-            <th>创建时间</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="student:${pageInfo.list}">
-            <!--页面th:block对studentList进行判空-->
-            <th:block th:if="${not #lists.isEmpty(pageInfo.list)}">
-                <td>
-                    <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i
-                            class="layui-icon">&#xe605;</i></div>
-                </td>
-                <td th:text="${studentStat.index+1}">2017009171822298053</td>
-                <td th:text="${student.sId}">2017009171822298053</td>
-                <td th:text="${student.sUsername}">老王:18925139194</td>
-                <td th:text="${student.sPassword}">7829.10</td>
-                <td th:text="${student.sClass}">7854.10</td>
-                <td th:text="${student.sMajor}">待确认</td>
-                <td th:text="${student.sSex}">未支付</td>
-                <td th:text="${student.createTime}">未发货</td>
-                <td class="td-manage">
-                    <a title="编辑" onclick="x_admin_show('编辑','/html/editStudentManager.html')" href="javascript:;">
-                        <i class="layui-icon">&#xe642;</i>
-                    </a>
-                    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                        <i class="layui-icon">&#xe640;</i>
-                    </a>
-                </td>
-            </th:block>
-        </tr>
-        </tbody>
-    </table>
-    <table class="layui-table" id="test"></table>
-
-
-    <!--分页-->
-    <div class="page">
-        <div>
-
-            <a class="prev" href=""
-               th:href="@{/studentManager(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}">&lt;&lt;</a>
-            <a class="num" href="" th:href="@{/studentManager}">首页</a><!-- -->
-<!--            <span class="current">2</span>-->
-<!--            <a class="num" href="">...</a>-->
-            <a class="num" href="" th:href="@{/studentManager(pageNum=${pageInfo.pages})}">尾页</a>
-            <a class="next" href=""
-               th:href="@{/studentManager(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}">&gt;&gt;</a>
-
-        </div>
-    </div>
-
+    <!--表格-layui假分页-->
+    <table class="layui-hide" id="test"></table>
 </div>
-<!--<script type="text/html" id="barDemo">-->
-<!--    <a title="编辑" onclick="x_admin_show('编辑','/html/editStudentManager.html')" href="javascript:;">-->
-<!--        <i class="layui-icon">&#xe642;</i>-->
-<!--    </a>-->
-<!--    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">-->
-<!--        <i class="layui-icon">&#xe640;</i>-->
-<!--    </a>-->
-<!--</script>-->
-<script>
 
+<script type="text/html" id="barDemo">
+    <a title="编辑" onclick="x_admin_show('编辑','/html/editStudentManager.html')" href="javascript:;">
+        <i class="layui-icon">&#xe642;</i>
+    </a>
+    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+        <i class="layui-icon">&#xe640;</i>
+    </a>
+</script>
+<script type="text/javascript">
+    layui.use('table', function () {
+        var kw = '';
+        // var kw = '1234';
+        addData(kw);
+    });
+
+    function addData(kwx) {
+        var table = layui.table;
+        table.render({
+            elem: '#test'
+            , url: '/showData?keyWord=' + kwx
+            , limit: 7 //默认为10
+            , cols: [
+                [
+                    {type: 'checkbox', fixed: 'left'}
+                    , {type: 'numbers', width: 80, title: '序号', fixed: 'center'}//序号
+                    , {field: 'sId', width: 80, title: 'ID', fixed: 'left'}
+                    , {field: 'sUsername', width: 90, title: '用户名'}
+                    , {field: 'sPassword', width: 90, title: '密码'}
+                    , {field: 'sClass', width: 80, title: '班级'}
+                    , {field: 'sMajor', title: '专业', width: 120} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                    , {field: 'sSex', title: '性别', sort: true,width:80}
+                    , {field: 'createTime', title: '创建日期', templet: '#createTime'}
+                    , {fixed: 'right', width: 165, align: 'center', title: '操作', toolbar: '#barDemo'}
+
+                ]
+            ]
+            , page: true
+            , done: function (res, curr, count) {
+                //数据的回调用，可不写
+            }
+        });
+    }
+
+    $("#sear1").keyup(function (event) {
+        if (event.keyCode == 13) {
+            var keyWord = $("#sear1").val();
+            addData(keyWord);
+        }
+    });
     /*分页*/
-    // layui.use(['form','laypage','layer','table','element'], function () {
+    // layui.use(['form','jquery', 'laypage', 'table'], function () {
     //     var form = layui.form
     //         ,laypage = layui.laypage //分页
-    //         ,layer = layui.layer //弹层
     //         ,table = layui.table //表格
-    //         ,element = layui.element //元素操作
-    //     table.render({
-    //         elem: '#test'
+    //         ,$=layui.jquery
+    //
+    //      table.render({
+    //         elem: '#demo'
+    //         ,height: 320
     //         , url: '/studentManager'//数据接口
-    //         , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+    //          ,parseData: function(res){
+    //              return {
+    //                  "code": res.status, //解析接口状态
+    //                  "msg": res.message, //解析提示文本
+    //                  "count": res.total, //解析数据长度
+    //                  "data": res.data.item //解析数据列表
+    //              };
+    //          }
+    //         ,method: 'get' //默认：get请求
+    //         ,limit: 5
+    //          ,limits: [5,10,15]
+    //         , cellMinWidth: 10 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
     //         , title: 'student'
     //         , page: true //开启分页
+    //         ,request: {
+    //             pageName: 'page' //页码的参数名称，默认：page
+    //             ,limitName: 'limit' //每页数据量的参数名，默认：limit
+    //         }
+    //         // ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
     //         , cols: [
     //             [
     //                 {type: 'checkbox', fixed: 'left'}
-    //                 , {field: 's_id', width: 80, title: 'ID', sort: true, fixed: 'left'}
-    //                 , {field: 's_username', width: 80, title: '用户名'}
-    //                 , {field: 's_password', width: 80, title: '密码', sort: true}
+    //                 , {field: 'sId', width: 80, title: 'ID', fixed: 'left'}
+    //                 , {field: 'sUsername', width: 80, title: '用户名'}
+    //                 , {field: 's_password', width: 80, title: '密码'}
     //                 , {field: 's_class', width: 80, title: '班级'}
     //                 , {field: 's_major', title: '专业'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
     //                 , {field: 's_sex', title: '性别', sort: true}
-    //                 , {field: 'create_time', title: '创建日期', sort: true}
+    //                 , {field: 'create_time', title: '创建日期', templet:'<div>{{ layui.util.toDateString(d.syncTime, "yyyy-MM-dd HH:mm:ss") }}</div>'}
     //                 , {fixed: 'right', width: 165, align: 'center',title: '操作', toolbar: '#barDemo'}
-    //
     //             ]
     //         ]
     //     });
+
+
+    //分页
+    // laypage.render({
+    //     elem: 'pageDemo' //分页容器的id
+    //     ,count: 20 //数据总数，从服务端得到
+    //     ,skin: '#1E9FFF' //自定义选中色值
+    //     ,prev:'<span></span>'
+    //     ,next:'<span></span>'
+    //     ,layout:['count','prev','page','next','limit','skip']
+    //     ,jump: function(obj, first){
+    //         //obj包含了当前分页的所有参数，比如：
+    //         console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+    //         console.log(obj.limit); //得到每页显示的条数
+    //
+    //         //首次不执行
+    //         if(!first){
+    //             layer.msg('第'+ obj.curr +'页', {offset: 'b'});
+    //         }
+    //     }
     // });
 
+    //监听头工具栏事件
+    // table.on('toolbar(test)', function(obj){
+    //     var checkStatus = table.checkStatus(obj.config.id)
+    //         ,data = checkStatus.data; //获取选中的数据
+    //     switch(obj.event){
+    //         case 'add':
+    //             layer.msg('添加');
+    //             break;
+    //         case 'update':
+    //             if(data.length === 0){
+    //                 layer.msg('请选择一行');
+    //             } else if(data.length > 1){
+    //                 layer.msg('只能同时编辑一个');
+    //             } else {
+    //                 layer.alert('编辑 [id]：'+ checkStatus.data[0].id);
+    //             }
+    //             break;
+    //         case 'delete':
+    //             if(data.length === 0){
+    //                 layer.msg('请选择一行');
+    //             } else {
+    //                 layer.msg('删除');
+    //             }
+    //             break;
+    //     };
+    // });
+    //
+    // //监听行工具事件
+    // table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+    //     var data = obj.data //获得当前行数据
+    //         ,layEvent = obj.event; //获得 lay-event 对应的值
+    //     if(layEvent === 'detail'){
+    //         layer.msg('查看操作');
+    //     } else if(layEvent === 'del'){
+    //         layer.confirm('真的删除行么', function(index){
+    //             obj.del(); //删除对应行（tr）的DOM结构
+    //             layer.close(index);
+    //             //向服务端发送删除指令
+    //         });
+    //     } else if(layEvent === 'edit'){
+    //         layer.msg('编辑操作');
+    //     }
+    // });
+
+
+    // });
 
     layui.use('laydate', function () {
         var laydate = layui.laydate;
@@ -200,29 +262,6 @@
         });
     });
 
-    /*用户-停用*/
-    function member_stop(obj, id) {
-        layer.confirm('确认要停用吗？', function (index) {
-
-            if ($(obj).attr('title') == '启用') {
-
-                //发异步把用户状态进行更改
-                $(obj).attr('title', '停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!', {icon: 5, time: 1000});
-
-            } else {
-                $(obj).attr('title', '启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!', {icon: 5, time: 1000});
-            }
-
-        });
-    }
 
     /*用户-删除*/
     function member_del(obj, id) {
@@ -245,6 +284,17 @@
         });
     }
 </script>
+
+<!--日期格式化js-->
+<!--<script th:src="@{/static/js/date-format.js}" type="text/javascript" charset="utf-8"></script>-->
+<!--<script id="createTime" type="text/html">-->
+<!--    {{#-->
+<!--    var date = new Date();-->
+<!--    date.setTime(d.createTime);-->
+<!--    return date.Format("yyyy-MM-dd hh:mm:ss");-->
+<!--    }}-->
+<!--</script>-->
+
 </body>
 
 </html>

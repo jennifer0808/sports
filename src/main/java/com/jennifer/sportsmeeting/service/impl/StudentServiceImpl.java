@@ -41,14 +41,15 @@ private final static Logger logger = LoggerFactory.getLogger(StudentServiceImpl.
 
     /**
      * 分页查询
-     * @param pageNo 页号
-     * @param pageSize 每页显示记录数-limit
+     * @param page 页号
+     * @param limit 每页显示记录数-limit
      * @return
      */
     @Override
-    public List<Student> findByPage(int pageNo, int pageSize) {
-        PageHelper.startPage(pageNo,pageSize);//在startPage后面紧跟的查询会变成一个分页查询
-        List<Student> list = studentMapper.selectByPage();
+    public List<Student> findByPage(int page, int limit,String keyWord) {
+        page=(page-1)*limit;
+        List<Student> list = studentMapper.selectByPage(page,limit,keyWord);
+        logger.info("list:"+list.size());
         return list;
     }
 

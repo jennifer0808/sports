@@ -3,6 +3,7 @@ package com.jennifer.sportsmeeting.mapper;
 import com.github.pagehelper.Page;
 import com.jennifer.sportsmeeting.bean.Student;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,16 +11,23 @@ import java.util.List;
 @Repository//为了声明Bean
 @Mapper
 public interface StudentMapper {
-    /**
-     * 查询所有
-     */
-     List<Student> selectListStudent();
+
 
     /**
      * 分页查询
      * @return
      */
-     List<Student> selectByPage();
+     List<Student> selectByPage(@Param("page")int page,@Param("limit")int limit,@Param("keyWord")String keyWord);
+
+     int selectAllCount(@Param("parameter") String keyWord);
+
+
+
+
+    /**
+     * 查询所有
+     */
+    List<Student> selectListStudent();
 
     /**
      * 修改
