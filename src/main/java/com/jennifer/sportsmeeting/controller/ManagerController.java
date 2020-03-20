@@ -34,43 +34,6 @@ public class ManagerController {
     @Autowired
     private StudentService studentService;
 
-
-    /**
-     * 学生信息管理-查询所有
-     *
-     * @return
-     */
-//    @RequestMapping("/studentManager")
-//    public ModelAndView StudentManager(ModelAndView modelAndView) {
-//        ModelAndView mv = new ModelAndView();
-//        List<Student> list = studentService.findAllStudent();
-//        mv.addObject("studentList", list);//页面对list进行判空
-//        mv.setViewName("/html/studentManager");
-//        return mv;
-//    }
-
-
-//    @GetMapping(value = "/studentManager" )
-//    public String StudentManager(Model model,@RequestParam(required = false,defaultValue = "1") int page,
-//                                   @RequestParam(required = false,defaultValue = "6") int limit){
-//        JSONObject map = new JSONObject();
-//        try{
-//            List<Student> list = studentService.findByPage(page,limit);//pageSize相当于limit角色
-//            logger.info("list:"+list+";page:"+page+";limit:"+limit);
-//            PageInfo<Student> pageInfo = new PageInfo<Student>(list);
-//
-//            map.put("code",0);
-//            map.put("msg","");
-//            map.put("count",pageInfo.getTotal());
-//            map.put("data",list);
-//            System.out.println("map:"+map);
-//            model.addAttribute("map",map.toString());
-//        }catch (Exception e){
-//         throw new MyException(11,e.getMessage());
-//        }
-//        return "html/studentManager";
-//    }
-
     @GetMapping(value = "/studentManager")
     public String StudentManager() {
         return "html/studentManager";
@@ -80,7 +43,8 @@ public class ManagerController {
     @RequestMapping("/showData")
     public Map<String,Object> StudentManagerPage(
             @RequestParam(required = false,defaultValue = "1")int page,
-            @RequestParam(required = false,defaultValue = "15")int limit,String keyWord){
+            @RequestParam(required = false,defaultValue = "15")int limit,
+            String keyWord){
         System.out.println("keyWord:"+keyWord);
         Map<String,Object> map=new HashMap<String,Object>();
         try{
@@ -88,7 +52,7 @@ public class ManagerController {
             logger.info("list:"+list+";page:"+page+";limit:"+limit);
             map.put("code",0);
             map.put("msg","");
-            map.put("count",25);
+            map.put("count",25);//todo:25需要进行数据库查询
             map.put("data",list);
         }catch (Exception e){
             throw new MyException(11,e.getMessage());

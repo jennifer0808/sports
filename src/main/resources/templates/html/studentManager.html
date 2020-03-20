@@ -50,31 +50,25 @@
             <input type="text" name="sUsername" placeholder="请输入姓名" id="sear1" autocomplete="off" class="layui-input">
             <input type="text" name="sClass" placeholder="请输入班级" autocomplete="off" class="layui-input">
             <div class="layui-input-inline">
-                <select name="contrller">
-                    <option>性别</option>
-                    <option>男</option>
-                    <option>女</option>
-                </select>
-            </div>
-            <div class="layui-input-inline">
-                <select name="contrller">
+                <select name="contrller" id="project">
                     <option value="">专业</option>
                     <option value="0">Math</option>
                     <option value="1">Computer</option>
-                    <option value="1">China</option>
-                    <option value="1">English</option>
-                    <option value="1">Art</option>
-                    <option value="1">Physics</option>
-                    <option value="1">Chemistry</option>
-                    <option value="1">Java</option>
-                    <option value="1">C</option>
-                    <option value="1">C++</option>
-                    <option value="1">Python</option>
-                    <option value="1">BootStrap</option>
+                    <option value="2">China</option>
+                    <option value="3">English</option>
+                    <option value="4">Art</option>
+                    <option value="5">Physics</option>
+                    <option value="6">Chemistry</option>
+                    <option value="7">Java</option>
+                    <option value="8">C</option>
+                    <option value="9">C++</option>
+                    <option value="10">Python</option>
+                    <option value="11">BootStrap</option>
                 </select>
             </div>
 
-            <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+            <button class="layui-btn" id="search-btn" lay-submit="" lay-filter="sreach"><i
+                    class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
     <xblock>
@@ -82,8 +76,10 @@
         <button class="layui-btn" onclick="x_admin_show('添加用户','./order-add.html')"><i class="layui-icon"></i>添加
         </button>
     </xblock>
-    <!--表格-layui假分页-->
-    <table class="layui-hide" id="test"></table>
+    <!--表格-layui分页-->
+    <table class="layui-hide" id="test" lay-filter="demo"></table>
+    <div id="caseListTablePager" align="center"></div>
+
 </div>
 
 <script type="text/html" id="barDemo">
@@ -95,46 +91,94 @@
     </a>
 </script>
 <script type="text/javascript">
-    layui.use('table', function () {
-        var kw = '';
-        // var kw = '1234';
-        addData(kw);
+    layui.use(['form', 'jquery', 'laypage', 'table'], function () {
+        getCaseList();
     });
 
-    function addData(kwx) {
-        var table = layui.table;
-        table.render({
-            elem: '#test'
-            , url: '/showData?keyWord=' + kwx
-            , limit: 7 //默认为10
-            , cols: [
-                [
-                    {type: 'checkbox', fixed: 'left'}
-                    , {type: 'numbers', width: 80, title: '序号', fixed: 'center'}//序号
-                    , {field: 'sId', width: 80, title: 'ID', fixed: 'left'}
-                    , {field: 'sUsername', width: 90, title: '用户名'}
-                    , {field: 'sPassword', width: 90, title: '密码'}
-                    , {field: 'sClass', width: 80, title: '班级'}
-                    , {field: 'sMajor', title: '专业', width: 120} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                    , {field: 'sSex', title: '性别', sort: true,width:80}
-                    , {field: 'createTime', title: '创建日期', templet: '#createTime'}
-                    , {fixed: 'right', width: 165, align: 'center', title: '操作', toolbar: '#barDemo'}
+    function getCaseList() {
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {
+                page: 1,
+                limit: 10,
+                // keyWord: $("#sear1").val(),
+                // project: $("#project").find("option:selected").val()
+            },
+            url: '/showData',
+            success: function (data) {
+                showCaseList(data);
+                console.log("data2.limit:" + data.limit + "data.count:" + data.count);
 
-                ]
-            ]
-            , page: true
-            , done: function (res, curr, count) {
-                //数据的回调用，可不写
+                var laypage = layui.laypage;
+                laypage.render({
+                    elem: 'caseListTablePager'
+                    , count: data.count  //总记录数，后端返回的记录总数
+                    , limit: data.limit//每页记录数，后端返回的pageSize数据，实际为前端切换分页传入
+                    ,limits:[10]
+                    , prev: '<<'
+                    , next: '>>'
+                    , layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
+
+                    , jump: function (obj, first) {
+                        console.log("curr:" + obj.curr + "limit:" + obj.limit);
+                        if (!first) {//首页不执行
+                            //分页切换的回调
+                            $.ajax({
+                                type: 'post',
+                                dataType: 'json',
+                                data: {
+                                    page: obj.curr,
+                                    limit: obj.limit,
+                                    // api_url: $("#apiurl").val(),
+                                    // keyWord: $("#sear1").val(),
+                                    // project: $("#project").find("option:selected").val()
+                                },
+                                url: '/showData',
+                                success: function (data) {
+                                    showCaseList(data);
+                                }
+                            })
+                        }
+                    }
+                });
             }
-        });
+        })
     }
 
-    $("#sear1").keyup(function (event) {
-        if (event.keyCode == 13) {
-            var keyWord = $("#sear1").val();
-            addData(keyWord);
+
+    function showCaseList(data) {
+        var caseArr = "";
+        if (data.code == 0) {
+            caseArr = data.data;
+            var table = layui.table;
+            console.log("table:" + table + "caseArr:" + JSON.stringify(caseArr)+ data.count + data.limit);
+            table.render({
+                count: data.count,
+                limit:data.limit,
+                elem: '#test',
+
+                cols: [
+                    [
+                        {type: 'checkbox', fixed: 'left'}
+                        // , {type: 'numbers', width: 80, title: '序号', fixed: 'center'}//序号
+                        , {field: 'sId', width: 80, title: 'ID', fixed: 'left'}
+                        , {field: 'sUsername', width: 90, title: '用户名'}
+                        , {field: 'sPassword', width: 90, title: '密码'}
+                        , {field: 'sClass', width: 80, title: '班级'}
+                        , {field: 'sMajor', title: '专业', width: 120} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                        , {field: 'sSex', title: '性别', sort: true, width: 80}
+                        , {field: 'createTime', title: '创建日期', templet: '#createTime'}
+                        , {fixed: 'right', width: 165, align: 'center', title: '操作', toolbar: '#barDemo'}
+                    ]
+                ],
+                data: caseArr,
+                page:false
+            });
         }
-    });
+    }
+
+
     /*分页*/
     // layui.use(['form','jquery', 'laypage', 'table'], function () {
     //     var form = layui.form
@@ -143,9 +187,9 @@
     //         ,$=layui.jquery
     //
     //      table.render({
-    //         elem: '#demo'
+    //         elem: '#test'
     //         ,height: 320
-    //         , url: '/studentManager'//数据接口
+    //         , url: '/showData'//数据接口
     //          ,parseData: function(res){
     //              return {
     //                  "code": res.status, //解析接口状态
@@ -154,12 +198,12 @@
     //                  "data": res.data.item //解析数据列表
     //              };
     //          }
-    //         ,method: 'get' //默认：get请求
+    //         ,method: 'post' //默认：get请求
     //         ,limit: 5
     //          ,limits: [5,10,15]
     //         , cellMinWidth: 10 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
     //         , title: 'student'
-    //         , page: true //开启分页
+    //      //   , page: true //开启分页
     //         ,request: {
     //             pageName: 'page' //页码的参数名称，默认：page
     //             ,limitName: 'limit' //每页数据量的参数名，默认：limit
@@ -168,22 +212,23 @@
     //         , cols: [
     //             [
     //                 {type: 'checkbox', fixed: 'left'}
+    //                 , {type: 'numbers', width: 80, title: '序号', fixed: 'center'}//序号
     //                 , {field: 'sId', width: 80, title: 'ID', fixed: 'left'}
-    //                 , {field: 'sUsername', width: 80, title: '用户名'}
-    //                 , {field: 's_password', width: 80, title: '密码'}
-    //                 , {field: 's_class', width: 80, title: '班级'}
-    //                 , {field: 's_major', title: '专业'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-    //                 , {field: 's_sex', title: '性别', sort: true}
-    //                 , {field: 'create_time', title: '创建日期', templet:'<div>{{ layui.util.toDateString(d.syncTime, "yyyy-MM-dd HH:mm:ss") }}</div>'}
-    //                 , {fixed: 'right', width: 165, align: 'center',title: '操作', toolbar: '#barDemo'}
+    //                 , {field: 'sUsername', width: 90, title: '用户名'}
+    //                 , {field: 'sPassword', width: 90, title: '密码'}
+    //                 , {field: 'sClass', width: 80, title: '班级'}
+    //                 , {field: 'sMajor', title: '专业', width: 120} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+    //                 , {field: 'sSex', title: '性别', sort: true, width: 80}
+    //                 , {field: 'createTime', title: '创建日期', templet: '#createTime'}
+    //                 , {fixed: 'right', width: 165, align: 'center', title: '操作', toolbar: '#barDemo'}
     //             ]
     //         ]
     //     });
-
-
-    //分页
+    //
+    //
+    // // 分页
     // laypage.render({
-    //     elem: 'pageDemo' //分页容器的id
+    //     elem: 'caseListTablePager' //分页容器的id
     //     ,count: 20 //数据总数，从服务端得到
     //     ,skin: '#1E9FFF' //自定义选中色值
     //     ,prev:'<span></span>'
@@ -200,9 +245,9 @@
     //         }
     //     }
     // });
-
-    //监听头工具栏事件
-    // table.on('toolbar(test)', function(obj){
+    //
+    // // 监听头工具栏事件
+    // table.on('toolbar(demo)', function(obj){
     //     var checkStatus = table.checkStatus(obj.config.id)
     //         ,data = checkStatus.data; //获取选中的数据
     //     switch(obj.event){
@@ -244,8 +289,8 @@
     //         layer.msg('编辑操作');
     //     }
     // });
-
-
+    //
+    //
     // });
 
     layui.use('laydate', function () {
