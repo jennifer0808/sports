@@ -44,11 +44,11 @@ public class ManagerController {
     public Map<String,Object> StudentManagerPage(
             @RequestParam(required = false,defaultValue = "1")int page,
             @RequestParam(required = false,defaultValue = "15")int limit,
-            String keyWord){
-        System.out.println("keyWord:"+keyWord);
+            String sUsername){
+        System.out.println("sUsername:"+sUsername);
         Map<String,Object> map=new HashMap<String,Object>();
         try{
-            List<Student> list = studentService.findByPage(page,limit,keyWord);
+            List<Student> list = studentService.findByPage(page,limit,sUsername);
             logger.info("list:"+list+";page:"+page+";limit:"+limit);
             map.put("code",0);
             map.put("msg","");

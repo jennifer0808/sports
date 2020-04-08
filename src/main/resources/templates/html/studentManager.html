@@ -44,7 +44,7 @@
 
 <div class="x-body">
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
+        <form class="layui-form layui-col-md12 x-so" th:action="@{/showData}" >
             <input class="layui-input" placeholder="开始日" name="start" id="start">
             <input class="layui-input" placeholder="截止日" name="end" id="end">
             <input type="text" name="sUsername" placeholder="请输入姓名" id="sear1" autocomplete="off" class="layui-input">
@@ -68,7 +68,7 @@
             </div>
 
             <button class="layui-btn" id="search-btn" lay-submit="" lay-filter="sreach"><i
-                    class="layui-icon">&#xe615;</i></button>
+                    class="layui-icon" type="submit" >&#xe615;</i></button><!--onclick="selectCondition()"-->
         </form>
     </div>
     <xblock>
@@ -93,7 +93,12 @@
 <script type="text/javascript">
     layui.use(['form', 'jquery', 'laypage', 'table'], function () {
         getCaseList();
+        // selectCondition()
     });
+
+    // function  selectCondition() {
+
+    // }
 
     function getCaseList() {
         $.ajax({
@@ -102,6 +107,7 @@
             data: {
                 page: 1,
                 limit: 10,
+                sUsername:$("#sear1").val(),
                 // keyWord: $("#sear1").val(),
                 // project: $("#project").find("option:selected").val()
             },
@@ -130,6 +136,7 @@
                                 data: {
                                     page: obj.curr,
                                     limit: obj.limit,
+                                    sUsername:$("#sear1").val(),
                                     // api_url: $("#apiurl").val(),
                                     // keyWord: $("#sear1").val(),
                                     // project: $("#project").find("option:selected").val()
