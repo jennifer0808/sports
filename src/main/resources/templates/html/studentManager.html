@@ -73,8 +73,12 @@
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" onclick="fileClick()">批量导入</button>
         <button class="layui-btn" onclick="x_admin_show('添加用户','./order-add.html')"><i class="layui-icon"></i>添加
         </button>
+
+        <input type="file" id="upfile" name="upfile" placeholder="" οnchange="importExp(1);" style="display: none;"/>
+
     </xblock>
     <!--表格-layui分页-->
     <table class="layui-hide" id="test" lay-filter="demo"></table>
@@ -93,12 +97,8 @@
 <script type="text/javascript">
     layui.use(['form', 'jquery', 'laypage', 'table'], function () {
         getCaseList();
-        // selectCondition()
     });
 
-    // function  selectCondition() {
-
-    // }
 
     function getCaseList() {
         $.ajax({
@@ -185,7 +185,40 @@
         }
     }
 
+    //导入文件
+    function importExp(type){
+        var index = layer.load(1, {time: 20*1000});  // 调用加载层
+        var formData = new FormData();
+        var name = $("#upfile").val();
+        formData.append("name",name);
+        formData.append("file",$("#upfile")[0].files[0]);
 
+        $.ajax({
+            url : '/zdry/personInfo/uploadExcelController/uploadExcel?type='+type,
+            type : 'POST',
+            data : formData,
+            //ajax2.0可以不用设置请求头，但是jq帮我们自动设置了，这样的话需要我们自己取消掉
+            contentType:false,
+            //取消帮我们格式化数据，是什么就是什么
+            processData:false,
+            success : function(data) {
+                //关闭 加载层
+                layer.close(index);
+                if(data.state=="00"){
+                    layer.msg("导入成功");
+                    window.location.href="/zdry/personInfo/weiwen";
+                }else if(data.state=="01"){
+                    layer.msg("excel中身份证不能为空");
+                }else if(data.state=="02"){
+                    layer.alert("以下人员已经存在，不可重复上传！<br/>"+data.exsitCertNums, {icon: 0});
+                }else{
+                    layer.msg("导入失败");
+                }
+            }
+        });
+
+        $("#upfile").val("");
+    }
     /*分页*/
     // layui.use(['form','jquery', 'laypage', 'table'], function () {
     //     var form = layui.form
@@ -324,6 +357,11 @@
         });
     }
 
+function fileClick(){
+
+    $("#upfile").click();
+
+}
 
     function delAll(argument) {
 

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="lib/layui/css/layui.css">
+</head>
+<body>
+<div style="margin-top: 17px;margin-left: 110px;">
+    <span>班级搜索：</span><input type="text" style="height: 27px;width: 220px;" id="sear1" placeholder="请输入班级进行模糊查询"/>
+    <button type="button" class="layui-btn" id="importFile" shiro:hasAnyRoles="root,resourceManager"><i
+            class="layui-icon"></i>导入考勤模板
+    </button>
+</div>
+
+<div class="layui-card-body">
+    <table class="layui-hide" id="test"></table>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script src="js/jquery.min.js"></script>
+<script src="lib/layui/layui.js"></script>
+
+<script>
+
+
+    layui.use(['upload', 'table'], function () {
+        var kw = '';
+        addData(kw);
+        upload = layui.upload;
+        //指定允许上传的文件类型
+        upload.render({
+            elem: '#importFile'
+            , url: port.getAttendanceListURL("import_attendance")
+            , accept: 'file' //普通文件
+            , exts: 'xlsx' //只允许上传压缩文件
+            , done: function (res) {
+                if (res.code == 0) { //上传成功
+                    layer.msg(res.msg);
+
+                } else {
+                    layer.msg('上传失败');
+                }
+                tabInst.reload();
+            }
+            , error: function (index, upload) {
+                layer.msg('上传失败');
+            }
+        });
+
+    });
+
+    function addData(kwx) {
+        var table = layui.table;
+        table.render({
+            elem: '#test'
+            , url: '../../showData?keyWord=' + kwx
+            , limit: 11 //默认为10
+            , cols: [
+                [
+                    {type: 'checkbox', fixed: 'left'}
+                    , {field: 'sId', width: 80, title: 'ID', fixed: 'left'}
+                    , {field: 'sUsername', width: 80, title: '用户名'}
+                    , {field: 'sPassword', width: 80, title: '密码'}
+                    , {field: 'sClass', width: 80, title: '班级'}
+                    , {field: 'sMajor', title: '专业'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                    , {field: 'sSex', title: '性别', sort: true}
+                    , {field: 'createTime', title: '创建日期'}
+                    , {fixed: 'right', width: 165, align: 'center', title: '操作', toolbar: '#barDemo'}
+
+                ]
+            ]
+            , page: true
+            , done: function (res, curr, count) {
+                //数据的回调用，可不写
+            }
+        });
+    }
+
+    $("#sear1").keyup(function (event) {
+        if (event.keyCode == 13) {
+            var keyWord = $("#sear1").val();
+            addData(keyWord);
+        }
+    });
+
+
+    //分页
+    // laypage.render({
+    //     elem: 'pageDemo' //分页容器的id
+    //     ,count: 20 //数据总数，从服务端得到
+    //     ,skin: '#1E9FFF' //自定义选中色值
+    //     ,prev:'<span></span>'
+    //     ,next:'<span></span>'
+    //     ,layout:['count','prev','page','next','limit','skip']
+    //     ,jump: function(obj, first){
+    //         //obj包含了当前分页的所有参数，比如：
+    //         console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+    //         console.log(obj.limit); //得到每页显示的条数
+    //
+    //         //首次不执行
+    //         if(!first){
+    //             layer.msg('第'+ obj.curr +'页', {offset: 'b'});
+    //         }
+    //     }
+    // });
+</script>
+</body>
+</html>
