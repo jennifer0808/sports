@@ -3,7 +3,9 @@ package com.jennifer.sportsmeeting.service;
 import com.github.pagehelper.Page;
 import com.jennifer.sportsmeeting.bean.Student;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -23,6 +25,9 @@ public interface StudentService {
      * @return
      */
     List<Student> findByPage(int pageNo,int pageSize,String keyWord);
+
+    int queryById(String id);
+    int queryCount();
 
     /**
      * 修改
@@ -44,4 +49,14 @@ public interface StudentService {
      * @return
      */
     int addStudent(Student student);
+
+
+    /**
+     * 导入
+     * @param fileName
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    boolean readExcel(String fileName, MultipartFile file)throws IOException;
 }

@@ -19,8 +19,11 @@ public interface StudentMapper {
      */
      List<Student> selectByPage(@Param("page")int page,@Param("limit")int limit,@Param("keyWord")String keyWord);
 
-     int selectAllCount(@Param("parameter") String keyWord);
+     int selectAllCount(@Param("keyWord") String keyWord);
 
+     int selectById(@Param("id")String id);
+
+    int selectCount();
 
 
 

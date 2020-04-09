@@ -55,15 +55,43 @@ public class ManagerController {
         try {
             List<Student> list = studentService.findByPage(page, limit, sUsername);
             logger.info("list:" + list + ";page:" + page + ";limit:" + limit);
+            int count = studentService.queryCount();
+            System.out.println("count:"+count);
             map.put("code", 0);
             map.put("msg", "");
-            map.put("count", 25);//todo:25需要进行数据库查询
+            map.put("count", count);//todo:25需要进行数据库查询
             map.put("data", list);
         } catch (Exception e) {
             throw new MyException(11, e.getMessage());
         }
         return map;
     }
+
+    //导入
+    @RequestMapping("readExcel")
+    @ResponseBody
+    public Map readExcel(@RequestParam MultipartFile file) {
+        boolean a = false;
+        String fileName = file.getOriginalFilename();
+        logger.info("fileName:"+fileName);
+        Map map = new HashMap();
+        try {
+            a = studentService.readExcel(fileName, file);
+            if (a) {
+                map.put("code", 0);
+                map.put("msg", "导入EXCEL成功！");
+                return map;
+            } else {
+                map.put("code", 1);
+                map.put("msg", "导入EXCEL失败！");
+                return map;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
 
 
 //test分页1
@@ -156,7 +184,7 @@ public class ManagerController {
     /**
      * 导入考勤模板
      *
-     * @param response
+     * @param
      * @return
      */
     @RequestMapping("/get/import_attendance")
