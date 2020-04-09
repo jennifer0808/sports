@@ -1,8 +1,5 @@
 package com.jennifer.sportsmeeting.service.impl;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.jennifer.sportsmeeting.bean.Student;
 import com.jennifer.sportsmeeting.exception.MyException;
 import com.jennifer.sportsmeeting.mapper.StudentMapper;
@@ -13,7 +10,6 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,13 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Service(value = "studentService")
-@Transactional(readOnly = true)
 public class StudentServiceImpl implements StudentService {
     private final static Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     @Autowired
@@ -92,6 +86,7 @@ public class StudentServiceImpl implements StudentService {
      * @return
      */
     @Override
+    @Transactional(readOnly = false)
     public int modifyStudent(Student student) {
         int num = 0;
         num = studentMapper.updateStudent(student);
@@ -104,9 +99,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = false)
     public int addStudent(Student student) {
-        return 0;
+        return studentMapper.insertStudent(student);
     }
 
     @Override
@@ -191,11 +186,10 @@ public class StudentServiceImpl implements StudentService {
 
         for (Student stu : studentList) {
             //查询是否存在,1存在,0不存在
-//            int count = studentMapper.selectById(stu.getsId());
             int count =  queryById(stu.getsId());
             System.out.println(count);
             if (count == 0) {
-                studentMapper.insertStudent(stu);
+                addStudent(stu);
                 System.out.println(" 插入 " + stu);
             } else {
                 modifyStudent(stu);

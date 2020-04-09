@@ -37,16 +37,16 @@
     </select>
 
     <!--根据id查询总数-->
-    <select id="selectById"  resultType="java.lang.Integer" parameterType="java.lang.String">
+    <select id="selectById" resultType="java.lang.Integer" parameterType="java.lang.String">
         select count(*) from student
         <if test='id!="" or id!=null '>
-            where s_id = #{id,jdbcType=VARCHAR}
+            where s_id = #{id,jdbcType=VARCHAR} and state=0
         </if>
     </select>
 
     <!--查询总数-->
-    <select id="selectCount"  resultType="java.lang.Integer" >
-        select count(*) from student
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from student where state=0
 
     </select>
 
@@ -55,37 +55,51 @@
         select count(*) from student
 
         <if test='parameter!="" or parameter!=null '>
-            where s_username LIKE '%${keyWord}%'
+            where s_username LIKE '%${keyWord}%' and state=0
         </if>
 
     </select>
 
     <!--修改-->
-    <update id="updateStudent"  parameterType="com.jennifer.sportsmeeting.mapper.StudentMapper">
+    <update id="updateStudent" parameterType="com.jennifer.sportsmeeting.bean.Student">
         update student
         <set>
             <if test="sUsername != null">
                 s_username = #{sUsername,jdbcType=VARCHAR}
             </if>
             <if test="sPassword != null">
-                s_password = #{sPassword,jdbcType=VARCHAR}
+                ,s_password = #{sPassword,jdbcType=VARCHAR}
             </if>
             <if test="sClass != null">
-                s_class = #{sClass,jdbcType=VARCHAR}
+                ,s_class = #{sClass,jdbcType=VARCHAR}
             </if>
             <if test="sMajor != null">
-                s_major = #{sMajor,jdbcType=VARCHAR}
+                ,s_major = #{sMajor,jdbcType=VARCHAR}
             </if>
             <if test="sSex != null">
-                s_sex = #{sSex,jdbcType=CHAR}
+                ,s_sex = #{sSex,jdbcType=CHAR}
             </if>
             <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP}
+                ,create_time = #{createTime,jdbcType=TIMESTAMP}
             </if>
 
         </set>
-        where s_id = #{sId,jdbcType=VARCHAR}
+        where s_id = #{sId,jdbcType=VARCHAR} and state=0
     </update>
+
+    <insert id="insertStudent" parameterType="com.jennifer.sportsmeeting.bean.Student">
+        insert into student (s_id,s_username,s_password,s_class,s_major,s_sex,create_time,state)
+        values (
+        #{sId,jdbcType=VARCHAR},
+        #{sUsername,jdbcType=VARCHAR},
+        #{sPassword,jdbcType=VARCHAR},
+        #{sClass,jdbcType=VARCHAR},
+        #{sMajor,jdbcType=VARCHAR},
+        #{sSex,jdbcType=CHAR},
+        #{createTime,jdbcType=TIMESTAMP},
+        0)
+
+    </insert>
 
 
 </mapper>

@@ -15,16 +15,16 @@ public interface StudentMapper {
 
     /**
      * 分页查询
+     *
      * @return
      */
-     List<Student> selectByPage(@Param("page")int page,@Param("limit")int limit,@Param("keyWord")String keyWord);
+    List<Student> selectByPage(@Param("page") int page, @Param("limit") int limit, @Param("keyWord") String keyWord);
 
-     int selectAllCount(@Param("keyWord") String keyWord);
+    int selectAllCount(@Param("keyWord") String keyWord);
 
-     int selectById(@Param("id")String id);
+    int selectById(@Param("id") String id);
 
     int selectCount();
-
 
 
     /**
@@ -34,23 +34,26 @@ public interface StudentMapper {
 
     /**
      * 修改
+     *
      * @param student
      * @return
      */
-     int updateStudent(Student student);
+    int updateStudent(Student student);
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-     int deleteStudent(String id);
+    int deleteStudent(String id);
 
     /**
      * 增加所有
+     *
      * @param student
      * @return
      */
-     int insertStudent(Student student);
+    int insertStudent(Student student);
 
 }
