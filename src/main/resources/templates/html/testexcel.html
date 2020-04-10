@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -16,7 +16,7 @@
 <div class="layui-card-body">
     <table class="layui-hide" id="test"></table>
     <script type="text/html" id="toolbarDemo">
-        <a href="${pageContext.request.contextPath}/export" class="layui-btn">导出</a>
+        <a href="${pageContext.request.contextPath}/export" th:href="@{/export}" class="layui-btn">导出</a>
         <button type="button" class="layui-btn" id="test3">导入</button>
     </script>
 </div>

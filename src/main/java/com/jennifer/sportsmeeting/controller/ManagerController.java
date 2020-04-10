@@ -9,6 +9,12 @@ import com.jennifer.sportsmeeting.exception.MyException;
 import com.jennifer.sportsmeeting.service.ManagerService;
 import com.jennifer.sportsmeeting.service.StudentService;
 import com.jennifer.sportsmeeting.service.excelService;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.xssf.streaming.SXSSFCell;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +23,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +45,7 @@ public class ManagerController {
     @Autowired
     private StudentService studentService;
     @Autowired
-    private excelService  omsAttendanceService;
+    private excelService omsAttendanceService;
 
     @GetMapping(value = "/studentManager")
     public String StudentManager() {
@@ -56,7 +64,7 @@ public class ManagerController {
             List<Student> list = studentService.findByPage(page, limit, sUsername);
             logger.info("list:" + list + ";page:" + page + ";limit:" + limit);
             int count = studentService.queryCount();
-            System.out.println("count:"+count);
+            System.out.println("count:" + count);
             map.put("code", 0);
             map.put("msg", "");
             map.put("count", count);//todo:25需要进行数据库查询
@@ -73,7 +81,7 @@ public class ManagerController {
     public Map readExcel(@RequestParam MultipartFile file) {
         boolean a = false;
         String fileName = file.getOriginalFilename();
-        logger.info("fileName:"+fileName);
+        logger.info("fileName:" + fileName);
         Map map = new HashMap();
         try {
             a = studentService.readExcel(fileName, file);
@@ -92,6 +100,101 @@ public class ManagerController {
         return map;
     }
 
+    //导出
+
+    @RequestMapping("export")
+    public void export(HttpServletResponse response) {
+        List<Student> studentList = studentService.findAllStudent();
+        //创建一个Excel文件
+        SXSSFWorkbook workbook = new SXSSFWorkbook();//Excel2007
+        //创建工作表sheet
+        SXSSFSheet sheet = workbook.createSheet("案件");
+        //添加表头行
+        SXSSFRow row = sheet.createRow(0);
+
+        //设置单元格格式居中
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        //添加表头内容
+        SXSSFCell headCell = row.createCell(0);
+        headCell.setCellValue("sId");
+        headCell.setCellStyle(cellStyle);
+
+        headCell = row.createCell(1);
+        headCell.setCellValue("sUsername");
+        headCell.setCellStyle(cellStyle);
+
+        headCell = row.createCell(2);
+        headCell.setCellValue("sPassword");
+        headCell.setCellStyle(cellStyle);
+
+        headCell = row.createCell(3);
+        headCell.setCellValue("sClass");
+        headCell.setCellStyle(cellStyle);
+
+        headCell = row.createCell(4);
+        headCell.setCellValue("sMajor");
+        headCell.setCellStyle(cellStyle);
+
+        headCell = row.createCell(5);
+        headCell.setCellValue("sSex");
+        headCell.setCellStyle(cellStyle);
+
+        headCell = row.createCell(6);
+        headCell.setCellValue("createTime");
+        headCell.setCellStyle(cellStyle);
+
+        //添加数据内容
+        for (int i = 0; i < studentList.size(); i++) {
+            row = sheet.createRow(i + 1);
+            Student student = studentList.get(i);
+
+            SXSSFCell cellContent = row.createCell(0);
+            cellContent.setCellValue(student.getsId());
+            cellContent.setCellStyle(cellStyle);
+
+            cellContent = row.createCell(1);
+            cellContent.setCellValue(student.getsUsername());
+            cellContent.setCellStyle(cellStyle);
+
+            cellContent = row.createCell(2);
+            cellContent.setCellValue(student.getsPassword());
+            cellContent.setCellStyle(cellStyle);
+
+            cellContent = row.createCell(3);
+            cellContent.setCellValue(student.getsClass());
+            cellContent.setCellStyle(cellStyle);
+
+            cellContent = row.createCell(4);
+            cellContent.setCellValue(student.getsMajor());
+            cellContent.setCellStyle(cellStyle);
+
+            cellContent = row.createCell(5);
+            cellContent.setCellValue(student.getsSex());
+            cellContent.setCellStyle(cellStyle);
+
+            cellContent = row.createCell(6);
+            cellContent.setCellValue(student.getCreateTime());
+            cellContent.setCellStyle(cellStyle);
+
+        }
+        //保存Excel文件
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        OutputStream outputStream = null;
+        try {
+            outputStream = response.getOutputStream();
+            response.setHeader("Content-disposition", "attachment;filename=student.xlsx");
+            //默认Excel名称
+            workbook.write(outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
 
 //test分页1
@@ -171,13 +274,14 @@ public class ManagerController {
     public String Manager() {
         return "/html/manager";
     }
+
     /**
      * 系统统计
      *
      * @return
      */
     @RequestMapping("/testexcel")
-    public String excel(){
+    public String excel() {
         return "html/testexcel";
     }
 
@@ -210,22 +314,6 @@ public class ManagerController {
             return null;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //与return "redirect:/main"搭配使用
