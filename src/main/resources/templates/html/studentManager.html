@@ -44,7 +44,7 @@
 
 <div class="x-body">
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so" th:action="@{/showData}" >
+        <form class="layui-form layui-col-md12 x-so" th:action="@{/showData}">
             <input class="layui-input" placeholder="开始日" name="start" id="start">
             <input class="layui-input" placeholder="截止日" name="end" id="end">
             <input type="text" name="sUsername" placeholder="请输入姓名" id="sear1" autocomplete="off" class="layui-input">
@@ -68,7 +68,7 @@
             </div>
 
             <button class="layui-btn" id="search-btn" lay-submit="" lay-filter="sreach"><i
-                    class="layui-icon" type="submit" >&#xe615;</i></button><!--onclick="selectCondition()"-->
+                    class="layui-icon" type="submit">&#xe615;</i></button><!--onclick="selectCondition()"-->
         </form>
     </div>
     <xblock>
@@ -107,7 +107,7 @@
             data: {
                 page: 1,
                 limit: 10,
-                sUsername:$("#sear1").val(),
+                sUsername: $("#sear1").val(),
                 // keyWord: $("#sear1").val(),
                 // project: $("#project").find("option:selected").val()
             },
@@ -121,7 +121,7 @@
                     elem: 'caseListTablePager'
                     , count: data.count  //总记录数，后端返回的记录总数
                     , limit: data.limit//每页记录数，后端返回的pageSize数据，实际为前端切换分页传入
-                    ,limits:[10]
+                    , limits: [10]
                     , prev: '<<'
                     , next: '>>'
                     , layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
@@ -136,7 +136,7 @@
                                 data: {
                                     page: obj.curr,
                                     limit: obj.limit,
-                                    sUsername:$("#sear1").val(),
+                                    sUsername: $("#sear1").val(),
                                     // api_url: $("#apiurl").val(),
                                     // keyWord: $("#sear1").val(),
                                     // project: $("#project").find("option:selected").val()
@@ -159,10 +159,10 @@
         if (data.code == 0) {
             caseArr = data.data;
             var table = layui.table;
-            console.log("table:" + table + "caseArr:" + JSON.stringify(caseArr)+ data.count + data.limit);
+            console.log("table:" + table + "caseArr:" + JSON.stringify(caseArr) + data.count + data.limit);
             table.render({
                 count: data.count,
-                limit:data.limit,
+                limit: data.limit,
                 elem: '#test',
 
                 cols: [
@@ -175,163 +175,49 @@
                         , {field: 'sClass', width: 80, title: '班级'}
                         , {field: 'sMajor', title: '专业', width: 120} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
                         , {field: 'sSex', title: '性别', sort: true, width: 80}
-                        , {field: 'createTime', title: '创建日期', templet: '#createTime'}
+                        , {
+                        field: 'createTime', title: '创建日期', templet: function (d) {
+                            return Format(d.createTime,"yyyy-MM-dd HH:mm:ss");
+                        }
+                    }
                         , {fixed: 'right', width: 165, align: 'center', title: '操作', toolbar: '#barDemo'}
                     ]
                 ],
                 data: caseArr,
-                page:false
+                page: false
             });
         }
     }
 
-    //导入文件
-    function importExp(type){
-        var index = layer.load(1, {time: 20*1000});  // 调用加载层
-        var formData = new FormData();
-        var name = $("#upfile").val();
-        formData.append("name",name);
-        formData.append("file",$("#upfile")[0].files[0]);
 
-        $.ajax({
-            url : '/zdry/personInfo/uploadExcelController/uploadExcel?type='+type,
-            type : 'POST',
-            data : formData,
-            //ajax2.0可以不用设置请求头，但是jq帮我们自动设置了，这样的话需要我们自己取消掉
-            contentType:false,
-            //取消帮我们格式化数据，是什么就是什么
-            processData:false,
-            success : function(data) {
-                //关闭 加载层
-                layer.close(index);
-                if(data.state=="00"){
-                    layer.msg("导入成功");
-                    window.location.href="/zdry/personInfo/weiwen";
-                }else if(data.state=="01"){
-                    layer.msg("excel中身份证不能为空");
-                }else if(data.state=="02"){
-                    layer.alert("以下人员已经存在，不可重复上传！<br/>"+data.exsitCertNums, {icon: 0});
-                }else{
-                    layer.msg("导入失败");
-                }
+
+    function Format(datetime,fmt) {
+        if (parseInt(datetime)==datetime) {
+            if (datetime.length==10) {
+                datetime=parseInt(datetime)*1000;
+            } else if(datetime.length==13) {
+                datetime=parseInt(datetime);
             }
-        });
-
-        $("#upfile").val("");
+        }
+        datetime=new Date(datetime);
+        var o = {
+            "M+" : datetime.getMonth()+1,                 //月份
+            "d+" : datetime.getDate(),                    //日
+            "H+" : datetime.getHours(),                   //小时
+            "m+" : datetime.getMinutes(),                 //分
+            "s+" : datetime.getSeconds(),                 //秒
+            "q+" : Math.floor((datetime.getMonth()+3)/3), //季度
+            "S"  : datetime.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt))
+            fmt=fmt.replace(RegExp.$1, (datetime.getFullYear()+"").substr(4 - RegExp.$1.length));
+        for(var k in o)
+            if(new RegExp("("+ k +")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        return fmt;
     }
-    /*分页*/
-    // layui.use(['form','jquery', 'laypage', 'table'], function () {
-    //     var form = layui.form
-    //         ,laypage = layui.laypage //分页
-    //         ,table = layui.table //表格
-    //         ,$=layui.jquery
-    //
-    //      table.render({
-    //         elem: '#test'
-    //         ,height: 320
-    //         , url: '/showData'//数据接口
-    //          ,parseData: function(res){
-    //              return {
-    //                  "code": res.status, //解析接口状态
-    //                  "msg": res.message, //解析提示文本
-    //                  "count": res.total, //解析数据长度
-    //                  "data": res.data.item //解析数据列表
-    //              };
-    //          }
-    //         ,method: 'post' //默认：get请求
-    //         ,limit: 5
-    //          ,limits: [5,10,15]
-    //         , cellMinWidth: 10 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
-    //         , title: 'student'
-    //      //   , page: true //开启分页
-    //         ,request: {
-    //             pageName: 'page' //页码的参数名称，默认：page
-    //             ,limitName: 'limit' //每页数据量的参数名，默认：limit
-    //         }
-    //         // ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
-    //         , cols: [
-    //             [
-    //                 {type: 'checkbox', fixed: 'left'}
-    //                 , {type: 'numbers', width: 80, title: '序号', fixed: 'center'}//序号
-    //                 , {field: 'sId', width: 80, title: 'ID', fixed: 'left'}
-    //                 , {field: 'sUsername', width: 90, title: '用户名'}
-    //                 , {field: 'sPassword', width: 90, title: '密码'}
-    //                 , {field: 'sClass', width: 80, title: '班级'}
-    //                 , {field: 'sMajor', title: '专业', width: 120} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-    //                 , {field: 'sSex', title: '性别', sort: true, width: 80}
-    //                 , {field: 'createTime', title: '创建日期', templet: '#createTime'}
-    //                 , {fixed: 'right', width: 165, align: 'center', title: '操作', toolbar: '#barDemo'}
-    //             ]
-    //         ]
-    //     });
-    //
-    //
-    // // 分页
-    // laypage.render({
-    //     elem: 'caseListTablePager' //分页容器的id
-    //     ,count: 20 //数据总数，从服务端得到
-    //     ,skin: '#1E9FFF' //自定义选中色值
-    //     ,prev:'<span></span>'
-    //     ,next:'<span></span>'
-    //     ,layout:['count','prev','page','next','limit','skip']
-    //     ,jump: function(obj, first){
-    //         //obj包含了当前分页的所有参数，比如：
-    //         console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-    //         console.log(obj.limit); //得到每页显示的条数
-    //
-    //         //首次不执行
-    //         if(!first){
-    //             layer.msg('第'+ obj.curr +'页', {offset: 'b'});
-    //         }
-    //     }
-    // });
-    //
-    // // 监听头工具栏事件
-    // table.on('toolbar(demo)', function(obj){
-    //     var checkStatus = table.checkStatus(obj.config.id)
-    //         ,data = checkStatus.data; //获取选中的数据
-    //     switch(obj.event){
-    //         case 'add':
-    //             layer.msg('添加');
-    //             break;
-    //         case 'update':
-    //             if(data.length === 0){
-    //                 layer.msg('请选择一行');
-    //             } else if(data.length > 1){
-    //                 layer.msg('只能同时编辑一个');
-    //             } else {
-    //                 layer.alert('编辑 [id]：'+ checkStatus.data[0].id);
-    //             }
-    //             break;
-    //         case 'delete':
-    //             if(data.length === 0){
-    //                 layer.msg('请选择一行');
-    //             } else {
-    //                 layer.msg('删除');
-    //             }
-    //             break;
-    //     };
-    // });
-    //
-    // //监听行工具事件
-    // table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-    //     var data = obj.data //获得当前行数据
-    //         ,layEvent = obj.event; //获得 lay-event 对应的值
-    //     if(layEvent === 'detail'){
-    //         layer.msg('查看操作');
-    //     } else if(layEvent === 'del'){
-    //         layer.confirm('真的删除行么', function(index){
-    //             obj.del(); //删除对应行（tr）的DOM结构
-    //             layer.close(index);
-    //             //向服务端发送删除指令
-    //         });
-    //     } else if(layEvent === 'edit'){
-    //         layer.msg('编辑操作');
-    //     }
-    // });
-    //
-    //
-    // });
+
+
 
     layui.use('laydate', function () {
         var laydate = layui.laydate;
@@ -357,11 +243,11 @@
         });
     }
 
-function fileClick(){
+    function fileClick() {
 
-    $("#upfile").click();
+        $("#upfile").click();
 
-}
+    }
 
     function delAll(argument) {
 
@@ -375,15 +261,6 @@ function fileClick(){
     }
 </script>
 
-<!--日期格式化js-->
-<!--<script th:src="@{/static/js/date-format.js}" type="text/javascript" charset="utf-8"></script>-->
-<!--<script id="createTime" type="text/html">-->
-<!--    {{#-->
-<!--    var date = new Date();-->
-<!--    date.setTime(d.createTime);-->
-<!--    return date.Format("yyyy-MM-dd hh:mm:ss");-->
-<!--    }}-->
-<!--</script>-->
 
 </body>
 
